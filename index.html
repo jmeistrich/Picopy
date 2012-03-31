@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+<title>PhotoSync</title>
+<link rel="stylesheet" type="text/css" href="gtof.css" />
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="helpers.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<script type="text/javascript" src="jquery.color.js"></script>
+<script type="text/javascript" src="uploader.js"></script>
+<script type="text/javascript" src="googleSync.js"></script>
+<script type="text/javascript" src="facebookSync.js"></script>
+<script type="text/javascript" src="fakeLeft.js"></script>
+<script type="text/javascript" src="fakeRight.js"></script>
+<!-- <script type="text/javascript" src="live.js"></script> -->
+<script type="text/javascript" src="debug.js"></script>
+<script type="text/javascript">
+    Debug.addHotkey("s", "photoSync.testSync");
+    Debug.addHotkey("f", "photoSync.testFacebookImages");
+</script>
+</head>
+<body>
+    <div id="fb-root"></div>
+    <div id="container">
+        <div id="logo"></div>
+        <div id="divButtonSync">
+            <input id="buttonSync" type="image" src="right.png" />
+        </div>
+        <div id="middle">
+            <div style="width: 50%; float: left;">
+                <div id="divNotOnFacebook" style="overflow: auto;" class="midItem">
+                    <div class="tableHeader">Only on Google</div>
+                    <div id="divGoogle">
+                        <div id="divGoogleLogin" style="display: none; padding: 2px">
+                            <button id="googleLogin" style="height: 25px;">
+                                <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
+                                <label>Google Login</label>
+                            </button>
+                        </div>
+                        <div id="divGoogleLoggedIn" style="display: none;">
+                            <img id="googleProfileImage" style="float: left; margin-top: 3px; margin-left: 10px;"></img>
+                            <button id="googleLogout" style="height: 25px; margin-left: 10px; float: left;">
+                                <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
+                                <label>Google Logout</label>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="tableNotOnFacebook" class="table">
+                    <img id="loadingLeft" class="loading" src="loading.gif"></img>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 50%; float: left;">
+                <div id="divOnFacebook" style="overflow: auto;" class="midItem">
+                    <div class="tableHeader">On Both</div>
+                    <div id="divFacebook" style="padding: 2px;">
+                        <div id="divFacebookLogIn">
+                            <div style="margin-top: 22px;">
+                                <fb:login-button scope="user_photos, publish_stream" onlogin="facebookSync.onLogin()"></fb:login-button>
+                            </div>
+                        </div>
+                        <div id="divFacebookLoggedIn" style="display: none;">
+                            <img id="facebookProfileImage" style="float: left; margin-top: 10px; margin-left: 10px;"></img>
+                            <span style="float: left; width: 132px; height: 22px; margin-top: 22px; margin-left: 10px;">
+                                <fb:login-button style="width: 132px; height: 15px;" scope="user_photos, publish_stream" onclick="facebookSync.logout()"></fb:login-button>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="tableOnFacebook" class="table">
+                        <img id="loadingRight" class="loading" src="loading.gif"></img>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            <div>About</div>
+        </div>
+    </div>
+</body>
+</html>
