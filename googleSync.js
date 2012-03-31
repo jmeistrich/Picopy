@@ -30,7 +30,7 @@
 		}
 		else
 		{
-			redirect_uri = "http://dl.dropbox.com/u/29646803/PhotoSync/gtof.html";
+			redirect_uri = "http://picopy.co";
 		}
 		var scope = "https://picasaweb.google.com/data/";
 
