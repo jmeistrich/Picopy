@@ -1,4 +1,4 @@
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 80;
 var oneYear = 31557600000;
 
 var express = require('express');

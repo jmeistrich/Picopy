@@ -22,16 +22,7 @@
 
 		var url = "https://accounts.google.com/o/oauth2/auth";
 		var client_id = "905742775678.apps.googleusercontent.com";
-		var redirect_uri;
-        // alert(isLocal);
-		if(isLocal)
-		{
-			redirect_uri = "http://localhost:8080/gtof.html";
-		}
-		else
-		{
-			redirect_uri = "http://picopy.co";
-		}
+		var redirect_uri = "http://picopy.co";
 		var scope = "https://picasaweb.google.com/data/";
 
 		var str = url + "?scope="+encodeURIComponent(scope)+
@@ -61,6 +52,10 @@
     {
     }
 
+    f.onLogin = function()
+    {
+    }
+
     f.createAlbum = function(albumName, link, onComplete)
     {
     }
@@ -79,10 +74,10 @@
 	function loadPicasa(onComplete)
 	{
 		$("#loadingLeft").fadeIn();
-		getPicasaAlbums(googleId, function(user,albums)
+		getPicasaAlbums(googleId, function(albums)
 		{
 			picasaData = albums;
-			$("#googleProfileImage").attr('src', user.thumbnail);
+			// $("#googleProfileImage").attr('src', user.thumbnail);
 			onComplete(picasaData);
 		});
 	}
@@ -127,39 +122,36 @@
         });
     }
 
-	function getPicasaAlbums(user, callback) {
+	function getPicasaAlbums(callback) {
         var url = "https://picasaweb.google.com/data/feed/api/user/default?access_token=:user_id&alt=json&kind=album&hl=en_US&access=visible&fields=gphoto:nickname,gphoto:thumbnail,entry(id,link,gphoto:numphotos,media:group(media:content,media:description,media:keywords,media:title,media:thumbnail))";
         url = url.replace(/:user_id/, user);
-        console.log(url);
+        // console.log(url);
 
         $.getJSON(url, function(data) {
-            console.log(data);
-            var user = {
-                nickname: data.feed["gphoto$nickname"]["$t"],
-                thumbnail: data.feed["gphoto$thumbnail"]["$t"]
-            }
+            // console.log(data);
             var album = null;
             var albums = [];
             $.each(data.feed.entry, function(i, element) {
                 album = {
                     id: element.id["$t"].split("?")[0].split("albumid/")[1],
                     count: element["gphoto$numphotos"]["$t"],
-                    title: element["media$group"]["media$title"]["$t"],
+                    name: element["media$group"]["media$title"]["$t"],
                     description: element["media$group"]["media$description"]["$t"],
-                    thumb: element["media$group"]["media$thumbnail"][0]["url"],
+                    thumb: element["media$group"]["media$thumbnail"][0]["url"]
                 }
                 $.each(element, function(index, links) {
                     if ($.isArray(links)) {
                         for (link in links) {
                             if (links[link]["rel"] == "alternate") {
                                 album.link = links[link].href;
+                                break;
                             }
                         }
                     }
                 });
-                album.images = function(callback) {
-                    $.picasa.images(user, album.id, callback);
-                }
+                // album.images = function(callback) {
+                //     $.picasa.images(user, album.id, callback);
+                // }
                 albums.push(album);
             });
             callback(user, albums);

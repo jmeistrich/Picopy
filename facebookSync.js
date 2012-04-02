@@ -2,7 +2,8 @@
 {
 	var v = f.v = f.v || {
 		onLoadComplete: {},
-		albums: []
+		albums: [],
+		accessToken: {}
 	}
 
 	f.load = function(onComplete)
@@ -33,7 +34,7 @@
 				console.log("facebook is logged in");
 				$(".fb_button_text").text('Facebook Logout');
 				$("#loadingRight").fadeIn();
-				getFacebookMe();
+				// getFacebookMe();
 				getFacebookAlbums(0);
 
 				transitionDiv('divFacebookLogIn', 'divFacebookLoggedIn', function()
@@ -88,13 +89,19 @@
 		});
 	}
 
-	function getFacebookMe()
+	f.getImages = function(albumId, onComplete)
 	{
-		FB.api('/me?fields=picture', function(response)
-		{
-			$("#facebookProfileImage").attr('src', response.picture.url);
-		});
+		var images = [];
+		_getImages(images, albumId, 0, onComplete);
 	}
+
+	// function getFacebookMe()
+	// {
+	// 	FB.api('/me?fields=picture', function(response)
+	// 	{
+	// 		$("#facebookProfileImage").attr('src', response.picture.url);
+	// 	});
+	// }
 
 	function getFacebookAlbums(offset)
 	{
@@ -109,19 +116,29 @@
 			}
 			else
 			{
+				var album = null;
 				for (var i = 0; i < response.data.length; i++)
 				{
-					v.albums.push(response.data[i]);
+					var element = response.data[i];
+					album = {
+						id: element.id,
+						count: element.count,
+						name: element.name,
+						description: element.description,
+						thumb: "https://graph.facebook.com/"+element.id+"/picture&type=album&access_token="+v.access_token,
+						link: element.link
+					}
+					// console.log(album.thumb);
+					// FB.api(album.thumb, function(resp) {
+					// 	console.log(album.thumb);
+					// 	console.log(resp);
+					// })
+					// console.log(album);
+					v.albums.push(album);
 				}
 				getFacebookAlbums(offset + 25);
 			}
 		});
-	}
-
-	f.getImages = function(albumId, onComplete)
-	{
-		var images = [];
-		_getImages(images, albumId, 0, onComplete);
 	}
 
 	function _getImages(images, albumId, offset, onComplete)
@@ -139,6 +156,7 @@
 				for (var i = 0; i < response.data.length; i++)
 				{
 					images.push(response.data[i]);
+					//TODO: Match the picasa style here
 				}
 				_getImages(images, albumId, offset + 25, onComplete);
 			}
@@ -161,6 +179,7 @@
 		{
 			if (response.status === 'connected')
 			{
+				v.access_token = response.authResponse.accessToken;
 				$(".fb_button_text").text('Facebook Logout');
 				f.onLogin();
 			}

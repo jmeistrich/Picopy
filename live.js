@@ -128,11 +128,7 @@
                 hasChanged = oldValue != newValue;
                 if(hasChanged)
                 {
-                  console.log("values:");
-                  console.log(header);
-                  console.log(header.toLowerCase());
-                  console.log(oldValue);
-                  console.log(newValue);
+                  console.log("Live.js: " + url);
                 }
                 break;
             }
@@ -207,7 +203,6 @@
         case "text/javascript":
         case "application/javascript":
         case "application/x-javascript":
-          console.log("refreshing: " + type + ", " + url);
           Live.refreshJs(url);
           break;
       }

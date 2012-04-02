@@ -1,4 +1,4 @@
-var isLocal = false;
+var isLocal = true;
 
 (function(f, $, undefined) {
 
@@ -11,43 +11,38 @@ var v = f.v = f.v || {
 	leftData: {},
 	rightData: {},
 
-	useFakeData: false,
+	useFakeData: true,
 	doUpload: true,
-	albumOrder: [],
-	partialId: {},
+	albumOrderLeft: [],
+	albumOrderRight: [],
 
 	testVar: {}
 };
 
-function test()
-{
-	v.testVar = "basdfasfasd";
-}
-
 f.testSync = function()
 {
-	f.clearTable();
-	onLoad();
-	// f.toggle($("#tableRow0"));
+	// f.clearTable();
+	// onLoad();
+	f.toggle($("#tableRowRight0"));
 
 	// f.sync();
 
 	// test();
 }
 
-f.testFacebookImages = function()
-{
-	// console.log(v.testVar);
-}
-
 f.clearTable = function()
 {
-	$.each($("#tableNotOnFacebook div"), function(index, row)
+	$.each($("#tableLeft div"), function(index, row)
 	{
 		$(row).remove();
 	});
 
-	$.each($("#tableOnFacebook div"), function(index, row)
+	$.each($("#tableRight div"), function(index, row)
+	{
+		$(row).remove();
+	});
+
+	$.each($("#divOnBothInner div"), function(index, row)
 	{
 		$(row).remove();
 	});
@@ -80,52 +75,56 @@ f.doCompare = function()
 		$("#divGoogle").fadeOut();
 		$("#divFacebook").fadeOut();
 
-		$.each(v.leftData, function(index, album)
+		function compareAlbums(data1, data2, table, rowPrefix)
 		{
-			var found = false;
-			var albumName = album.title;
-
-			$.each(v.rightData, function(i, fbAlbum)
+			$.each(data1, function(index, leftAlbum)
 			{
-				if(album.title == fbAlbum.name)
+				var found = false;
+				var albumName = leftAlbum.name;
+
+				$.each(data2, function(i, rightAlbum)
 				{
-					if(album.count != fbAlbum.count)
+					if(leftAlbum.name == rightAlbum.name)
 					{
-						album.isPartial = true;
-						album.fbId = fbAlbum.id;
-						console.log(fbAlbum);
+						if(leftAlbum.count != rightAlbum.count)
+						{
+							leftAlbum.isPartial = true;
+							leftAlbum.fbId = rightAlbum.id;
+							// console.log(rightAlbum);
+						}
+						else
+						{
+							found = true;
+							leftAlbum.found = true;
+							rightAlbum.found = true;
+						}
 					}
-					else
-					{
-						found = true;
-					}
+				});
+
+				var row =  '<div id="' + rowPrefix + index + '" class="tableRow" style="position: relative; float: left; margin: 10px; text-align: left; overflow: hidden; width: 160px; height: 160px;" onclick="photoSync.toggle(this);">'
+						 + '<img id="img' + index + '" style="zIndex: 0; width: 160px; height:160px; position: absolute; left: 0px; top: 0px;" src="' + leftAlbum.thumb + '"</img>'
+						 + '<div class="labelbg" style="zIndex: 1000; width: 160px; height: 40px; background: rgba(0,0,0,0.6); position: absolute; left: 0px; top: 120px;">'
+						 + '<label style="zIndex: 1000; color:#fff; font-size:10pt; position: relative; left: 5px; top: 2px;" id="title' + index + '">' + leftAlbum.name + '</label>'
+						 + '</div></div>';
+
+				if (!found)
+				{
+					$(table).append(row);
 				}
+				row = $(rowPrefix +index);
 			});
+		}
 
-			var row =  '<div id="tableRow' + index + '" class="tableRow" style="position: relative; float: left; margin: 10px; text-align: left; overflow: hidden; width: 160px; height: 160px;" onclick="photoSync.toggle(this);">'
-					 + '<img id="img' + index + '" style="zIndex: 0; width: 160px; height:160px; position: absolute; left: 0px; top: 0px;" src="' + album.thumb + '"</img>'
-					 + '<div class="labelbg" style="zIndex: 1000; width: 160px; height: 40px; background: rgba(0,0,0,0.6); position: absolute; left: 0px; top: 120px;">'
-					 + '<label style="zIndex: 1000; color:#fff; font-size:10pt; position: relative; left: 5px; top: 2px;" id="title' + index + '">' + album.title + '</label>'
-					 + '</div></div>';
-
-			if (!found)
-			{
-				$('#tableNotOnFacebook').append(row);
-			}
-			else
-			{
-				$('#tableOnFacebook').append(row);
-			}
-			row = $('#tableRow' +index);
-		});
+		compareAlbums(v.leftData, v.rightData, '#tableLeft', 'tableRowLeft');
+		compareAlbums(v.rightData, v.leftData, '#tableRight', 'tableRowRight');
 	}
 }
 
-f.uploader = function(id, albumId, images, index)
+f.uploader = function(id, albumId, images, index, albumOrder, side, rowPrefix)
 {
 	if (!images || index >= images.length)
 	{
-		$('#tableRow' + id).slideUp("slow", function() { 
+		$('#'+rowPrefix + id).slideUp("slow", function() { 
 			$(this).remove();
 		} );
 
@@ -150,18 +149,18 @@ f.uploader = function(id, albumId, images, index)
 			}
 		}, 1000);
 
-		if(id == v.albumOrder[v.albumOrder.length-1])
+		if(id == albumOrder[albumOrder.length-1])
 		{
-			v.albumOrder.pop();
+			albumOrder.pop();
 		}
 		return;
 	}
 	if(index == images.length - 1)
 	{
-		if(id != v.albumOrder[v.albumOrder.length-1])
+		if(id != albumOrder[albumOrder.length-1])
 		{
 			setTimeout(function() {
-				f.uploader(id, albumId, images, index);
+				f.uploader(id, albumId, images, index, albumOrder, side, rowPrefix);
 			}, 4000);
 			return;
 		}
@@ -169,18 +168,18 @@ f.uploader = function(id, albumId, images, index)
 	var img = images[index];
 	if(img.isSynced)
 	{
-		f.uploader(id, albumId, images, index + 1);
+		f.uploader(id, albumId, images, index + 1, albumOrder, side, rowPrefix);
 	}
 	else
 	{
-		v.rightSide.uploadImage(albumId, img, function() {
-			f.animateImage(id, index, 1000);
-			f.uploader(id, albumId, images, index + 1);
+		side.uploadImage(albumId, img, function() {
+			f.animateImage(id, index, 1000, rowPrefix);
+			f.uploader(id, albumId, images, index + 1, albumOrder, side, rowPrefix);
 		});
 	}
 }
 
-f.animateImage = function(id, index, speed)
+f.animateImage = function(id, index, speed, rowPrefix)
 {
 	var im = $('#img_'+id+'_'+index);
 	var target = $('#rowOn'+ id);
@@ -188,9 +187,10 @@ f.animateImage = function(id, index, speed)
 	var offset = im.offset();
 	var oldPos = im.position();
 
-	var oldRow = $('#tableRow' + id);
+	var oldRow = $('#'+rowPrefix + id);
 	var oldOffset = oldRow.offset();
 	im.appendTo('body');
+
 	im.css(
 	{
 		'zIndex': (500+index),
@@ -211,7 +211,7 @@ f.animateImage = function(id, index, speed)
 	});
 }
 
-f.animateImages = function($old, images, id)
+f.animateImages = function($old, images, id, rowPrefix)
 {
 	var num = images.length;
 	var numWide = Math.floor(Math.sqrt(num) * 4 / 3);
@@ -244,85 +244,80 @@ f.animateImages = function($old, images, id)
 		}
 		if(images[i].isSynced)
 		{
-			f.animateImage(id, i, 0);
+			f.animateImage(id, i, 0, rowPrefix);
 		}
 	});
 }
 
 f.sync = function()
 {
-	$.each($("#tableNotOnFacebook").children('div'), function(index, child)
+	function sync(table, side, otherSide, data, albumOrder, rowPrefix)
 	{
-        var $old = $(child);
-		if($old.attr('checked') != 'checked') return;
+		$.each(table.children('div'), function(index, child)
+		{
+	        var $old = $(child);
+			if($old.attr('checked') != 'checked') return;
 
-        f.toggle($old);
+	        f.toggle($old);
 
-		var id = child.id.replace('tableRow', '');
+			var id = child.id.replace(rowPrefix, '');
+	        $old.css('background-color','rgba(0,0,0,0.6)');
+			var pos = $old.position();
+			var oldOffset = $old.offset();
+			var $new = $old.clone().prependTo('#divSync');
+			$new.attr('id','rowOn' + id);
+			var width = $new.width();
+			$new.css({'width': '0'});
+			$new.animate({'opacity': 1, 'width': width+'px'}, "normal");
+			$new.find('img').remove();
+			albumOrder.push(id);
+			side.getImages(id, function(ims) {
+			    // The actual upload code
+		    
+				var albumName = $("#title" + id).html();
 
-        $old.css('background-color','rgba(0,0,0,0.6)');
-		
-		var pos = $old.position();
-
-		var oldOffset = $old.offset();
-
-		var $new = $old.clone().prependTo('#tableOnFacebook');
-		$new.attr('id','rowOn' + id);
-
-		var width = $new.width();
-
-		$new.css({'width': '0'});
-
-		$new.animate({'opacity': 1, 'width': width+'px'}, "normal");
-
-		$new.find('img').remove();
-
-		v.albumOrder.push(id);
-		v.leftSide.getImages(id, function(ims) {
-		    // The actual upload code
-	    
-			var albumName = $("#title" + id).html();
-
-			if(v.leftData[id].isPartial)
-			{
-				console.log("Partial: ", v.leftData[id].fbId);
-				v.partialId = v.leftData[id].fbId;
-				v.rightSide.getImages(v.partialId, function(imsRight) {
-					for(var i = 0; i < imsRight.length; i ++)
-					{
-						for(var u = 0; u < ims.length; u ++)
+				if(data[id].isPartial)
+				{
+					console.log("Partial: ", v.leftData[id].fbId);
+					otherSide.getImages(data[id].fbId, function(imsRight) {
+						for(var i = 0; i < imsRight.length; i ++)
 						{
-							if(imsRight[i].name.indexOf(ims[u].link) != -1)
+							for(var u = 0; u < ims.length; u ++)
 							{
-								ims[u].isSynced = true;
-								console.log("already synced: " + u);
+								if(imsRight[i].name.indexOf(ims[u].link) != -1)
+								{
+									ims[u].isSynced = true;
+									console.log("already synced: " + u);
+								}
 							}
+							
 						}
-						
-					}
-					if(v.doUpload)
-				    {
-						f.animateImages($old, ims, id);
-						f.uploader(id, v.leftData[id].fbId, ims, 0);
-					}
-				});
-			}
-			else
-			{
-				if(v.doUpload)
-			    {
-					v.rightSide.createAlbum(albumName, v.leftData[id].link, function(responseId) {
-						f.animateImages($old, ims, id);
-						f.uploader(id, responseId, ims, 0);
+						if(v.doUpload)
+					    {
+							f.animateImages($old, ims, id, rowPrefix);
+							f.uploader(id, data[id].fbId, ims, 0, albumOrder, otherSide, rowPrefix);
+						}
 					});
 				}
-			}
-			if(!v.doUpload)
-			{
-				f.animateImages($old, ims, id);
-			}
+				else
+				{
+					if(v.doUpload)
+				    {
+						otherSide.createAlbum(albumName, data[id].link, function(responseId) {
+							f.animateImages($old, ims, id);
+							f.uploader(id, responseId, ims, 0, albumOrder, otherSide, rowPrefix);
+						});
+					}
+				}
+				if(!v.doUpload)
+				{
+					f.animateImages($old, ims, id, rowPrefix);
+				}
+			});
 		});
-	});
+	}
+	sync($("#tableLeft"), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, "tableRowLeft");
+	sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
 }
 
 function onLoad()
@@ -330,6 +325,7 @@ function onLoad()
 	if(isLocal)
 	{
 		addScript("live.js");
+		$("#logo").css('background-color','blue');
 	}
 	if(!v.useFakeData)
 	{
@@ -354,8 +350,7 @@ function onLoad()
 }
 
 $(window).bind("load", function() {
-	console.log("Bound");
-	$('#buttonSync').click(function()
+	$('#divSync').click(function()
 	{
 		f.sync();
 	});
@@ -373,7 +368,5 @@ $(window).bind("load", function() {
 
 $(function()
 {
-	
-	console.log("loading");
 });
 }(window.photoSync = window.photoSync || {}, jQuery));

@@ -60,8 +60,8 @@
           image.title = element.title["$t"];
           image.description = element["media$group"]["media$description"]["$t"];
           image.thumbs = [];
-          console.log(image.description);
-          console.log(element);
+          // console.log(image.description);
+          // console.log(element);
           $.each(element, function(index, links)
           {
             if ($.isArray(links))

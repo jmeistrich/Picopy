@@ -12,23 +12,24 @@
 <script type="text/javascript" src="facebookSync.js"></script>
 <script type="text/javascript" src="fakeLeft.js"></script>
 <script type="text/javascript" src="fakeRight.js"></script>
-<!-- <script type="text/javascript" src="live.js"></script> -->
+<script type="text/javascript" src="live.js"></script>
 <script type="text/javascript" src="debug.js"></script>
 <script type="text/javascript">
     Debug.addHotkey("s", "photoSync.testSync");
-    Debug.addHotkey("f", "photoSync.testFacebookImages");
+    Debug.addHotkey("c", "photoSync.doCompare");
 </script>
 </head>
 <body>
     <div id="fb-root"></div>
     <div id="container">
         <div id="logo"></div>
-        <div id="divButtonSync">
-            <input id="buttonSync" type="image" src="Right.png" />
-        </div>
+            <div id="divSyncOuter">
+                <div id="divSync">
+                </div>
+            </div>
         <div id="middle">
-            <div style="width: 50%; float: left;">
-                <div id="divNotOnFacebook" style="overflow: auto;" class="midItem">
+            <div class="middleDivWrapper">
+                <div id="divLeft" style="overflow: auto;" class="midItem">
                     <div class="tableHeader">Only on Google</div>
                     <div id="divGoogle">
                         <div id="divGoogleLogin" style="display: none; padding: 2px">
@@ -45,14 +46,16 @@
                             </button>
                         </div>
                     </div>
-                    <div id="tableNotOnFacebook" class="table">
-                    <img id="loadingLeft" class="loading" src="loading.gif"></img>
+                    <div id="tableLeftWrapper">
+                        <div id="tableLeft" class="table">
+                        </div>
+                        <img id="loadingLeft" class="loading" src="loading.gif"></img>
                     </div>
                 </div>
             </div>
-            <div style="width: 50%; float: left;">
-                <div id="divOnFacebook" style="overflow: auto;" class="midItem">
-                    <div class="tableHeader">On Both</div>
+            <div class="middleDivWrapper">
+                <div id="divRight" style="overflow: auto;" class="midItem">
+                    <div class="tableHeader">Only on Facebook</div>
                     <div id="divFacebook" style="padding: 2px;">
                         <div id="divFacebookLogIn">
                             <div style="margin-top: 22px;">
@@ -66,9 +69,11 @@
                             </span>
                         </div>
                     </div>
-                    <div id="tableOnFacebook" class="table">
+                    <div id="tableRightWrapper">
+                        <div id="tableRight" class="table">
                         <img id="loadingRight" class="loading" src="loading.gif"></img>
                     </div>
+                </div>
                 </div>
             </div>
         </div>

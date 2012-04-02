@@ -1,18 +1,11 @@
-html, body, #table {
+html, body {
    height:100%;
    margin: 0;
    padding: 0;
    border: none;
    /*text-align: center;*/
 }
-.table {
-   /*margin: 0 auto;
-   text-align: left;
-   vertical-align: top;*/
-   /*width: 40%;*/
-}
 
-/* emulate the Facebook style in our IFrame */
 body
 {
     font-family: helvetica, "lucinda grande",arial,sans-serif;
@@ -64,18 +57,26 @@ body
     border-color:#babcbf;
     /*width: 50%;*/
     /*float: left;*/
-    margin-left: 50px;
-    margin-right: 50px;
+    /*margin-left: 50px;*/
+    /*margin-right: 50px;*/
     border-radius: 5px;
 }
 
-#divNotOnFacebook {
-    /*padding: 10px;*/
+.middleDivWrapper {
+  width: 50%;
+  float: left;
 }
 
-#divOnFacebook {
-    /*margin-left: 10px;
-    padding: 10px;*/
+#divLeft {
+    /*padding: 10px;*/
+    margin-left: 10px;
+    margin-right: 140px;
+}
+
+#divRight {
+    margin-left: 140px;
+    margin-right: 10px;
+    /*padding: 10px;*/
 }
 
 #footer {
@@ -86,13 +87,49 @@ body
     height:20px;   /* Height of the footer */
 }
 
-#divButtonSync {
+#divSyncOuter {
   clear: both;
-  position:fixed;
-  width:100%;
-  top:0;
-  margin-top:160px;
-  text-align: center;
+  width: 230px;
+  height: 230px;
+  /*background: green;*/
+  border-width: 2px;
+  border-radius: 16px;
+  border-color: #bbb;
+  border-style: solid;
+  position: fixed;
+  left: 50%;
+  top: 0;
+  margin: 160px 0 0 -125px;
+  padding: 10px;
+}
+
+#divSync {
+  border-style: dashed;
+  border-radius: 3px;
+  border-width: 3px;
+  border-color: #555;
+  /*width: auto;*/
+  height: 224px;
+}
+
+#tableLeftWrapper {
+  width: 567px;
+}
+
+#tableRightWrapper {
+  width: 567px;
+}
+
+#tableLeft {
+  margin: 0 auto;
+  width: 540px;
+  height: auto;
+}
+
+#tableOnFacebook {
+  margin: 0 auto;
+  width: 540px;
+  height: auto;
 }
 
 #divGoogle {
