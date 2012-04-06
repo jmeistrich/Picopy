@@ -17,33 +17,28 @@
 <script type="text/javascript">
     Debug.addHotkey("s", "photoSync.testSync");
     Debug.addHotkey("c", "photoSync.doCompare");
+    Debug.addHotkey("x", "photoSync.toggleCookie");
+    Debug.addHotkey("i", "photoSync.closeIntro");
 </script>
 </head>
 <body>
     <div id="fb-root"></div>
     <div id="container">
-        <div id="logo"></div>
-        <div id="services">
-            <div class="divService">
-                <img id="service1Bg" class="serviceBg"></img>
-                <div id="service1text" class="serviceText">Google</div>
-            </div>
-            <div class="divService">
-                <img id="service2Bg" class="serviceBg"></img>
-                <div id="service2text" class="serviceText">Facebook</div>
-            </div>
-        </div>
-        <div id="divSync">
-            <span id="syncText">
-                Sync
-            </span>
-        </div>
-        <div id="divSyncOuter">
-            
-            <div id="divSyncTableWrapper">
-                <div id="divSyncTable">
+        <div id="topSection">
+            <div id="logo"></div>
+            <div id="services">
+                <div class="divService">
+                    <img id="service1Bg" class="serviceBg"></img>
+                    <div id="service1text" class="serviceText">Google</div>
+                </div>
+                <div class="divService">
+                    <img id="service2Bg" class="serviceBg"></img>
+                    <div id="service2text" class="serviceText">Facebook</div>
                 </div>
             </div>
+        </div>
+        <div id="divButtonSync">
+            <input id="buttonSync" type="image" src="Right.png" />
         </div>
         <div id="middle">
             <div class="middleDivWrapper">
@@ -73,7 +68,7 @@
             </div>
             <div class="middleDivWrapper">
                 <div id="divRight" style="overflow: auto;" class="midItem">
-                    <div class="tableHeader">Only on Facebook</div>
+                    <div class="tableHeader">On Both</div>
                     <div id="divFacebook" style="padding: 2px;">
                         <div id="divFacebookLogIn">
                             <div style="margin-top: 22px;">
@@ -95,8 +90,30 @@
                 </div>
             </div>
         </div>
-        <div id="footer">
-            <div>About</div>
+    </div>
+    <div id="footer">
+        <div>About</div>
+    </div>
+    <div id="intro">
+        <div id="introBorder">
+            <div id="introBox">
+                <div id="logo2"></div>
+                <div id="introText">Select services to sync</div>
+                <div id="introServicesSelected">
+                    <div id="leftService"></div>
+                    <img id="serviceArrow" src="Right.png"></img>
+                    <div id="rightService"></div>
+                </div>
+                <div id="introServices">
+                    <img class="serviceIcon" id="serviceGoogle" src="Right.png"></img>
+                    <img class="serviceIcon" id="serviceFacebook" src="Right.png"></img>
+                    <img class="serviceIcon" id="serviceFlickr" src="Right.png"></img>
+                    <img class="serviceIcon" id="serviceInstagram" src="Right.png"></img>
+                </div>
+                <div id="goButton">
+                    <div id="goText">Go!</div>
+                </div>
+            </div>
         </div>
     </div>
 </body>

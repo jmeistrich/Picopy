@@ -1,7 +1,10 @@
 (function (f, $, undefined) {
 	f.load = function(onComplete)
 	{
-		generateFakeAlbums(onComplete);
+		if($.cookie("googleLogin") != null)
+		{
+			generateFakeAlbums(onComplete);
+		}
 	}
 
 	f.createAlbum = function(albumName, link, onComplete)

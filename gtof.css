@@ -11,27 +11,144 @@ body
     font-family: helvetica, "lucinda grande",arial,sans-serif;
     font-size: 13px;
     color: #333333;
-    margin: 0;
-    padding: 0;
     background: #e9e9e9;
 }
 
-#container {
-   min-height:100%;
-   position:relative;
+#intro {
+  height:100%;
+  width: 100%;
+  position: absolute;
+  background: rgba(0,0,0,0.5);
+  z-index: 3;
+  opacity: 0;
+  -moz-opacity: 0;
+  filter:alpha(opacity=0);
 }
 
-#logo {
-  background: black;
-  margin: 10px auto 10px 10px;
+#introBorder {
+  height: 400px;
+  width: 600px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -200px 0 0 -303px;
+  border-style: dashed;
+  border-width: 1;
+  border-color: gray;
+}
 
-  width: 300px;
-  height: 50px;
+#introBox {
+  width: 100%;
+  height: 100%;
+  background: #e9e9e9;
+  text-align: center;
+}
+
+#introServicesSelected {
+  width: 296px;
+  height: 106px;
+  margin: 10px auto 0 auto;
+}
+#introServicesSelected div,img{
+  float: left;
+}
+
+#introServicesSelected div{
+  width: 100px;
+  height: 100px;
+  border-style: solid;
+  border-width: 1;
+  border-color: gray;
+}
+
+#leftService {
+  margin: 0 10px 0 0;
+}
+
+#serviceArrow {
+  margin-top: 20px;
+}
+
+#rightService {
+  margin: 0 0 0 10px;
+}
+
+#introServices {
+  width: 464px;
+  height: 100px;
+  margin: 20px auto 20px auto; 
+}
+
+.serviceIcon {
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin: 0 5px 0 5px;
+  border-style: solid;
+  border-width: 1;
+  border-color: gray;
+  background: lightblue;
+  /*position: absolute;*/
+  /*cursor: hand;*/
+}
+
+#goButton {
+  background: -webkit-gradient(linear, left top, left bottom, 
+    color-stop(0%,#2981e4), color-stop(100%,#4ba3f6)); /* Chrome,Safari4+ */
+  /*display: inline-block;*/
+  /*padding: 5px 10px 6px;*/
+  color: #fff;
+  text-decoration: none;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+  text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  /*cursor: pointer;*/
+  width: 100px;
+  height: 40px;
+  margin: 0px auto 0px auto;
+  text-align: center;
+  position: relative;
+}
+
+#goText {
+  position: relative;
+  top: 13px;
+  /*position: relative;*/
+  /*margin: 0 auto 0 auto;*/
+  /*margin-top: 7px;*/
+  color: white;
+}
+
+#container {
+   min-height: 100%;
+   width: 100%;
+   position: absolute;
+   overflow: auto;
+}
+
+#topSection {
+  margin: 5px 0 5px 0;
+  width: 100%;
+  height: 80px;
+  position: absolute;
+}
+
+#logo, #logo2 {
+  /*position: absolute;*/
+
+  background: black;
+  margin: 0px auto 0px auto;
+
+  width: 400px;
+  height: 80px;
 }
 
 #services {
   position: absolute;
-  top: 0px;
+  top: 5px;
   right: 50px;
 }
 
@@ -66,15 +183,15 @@ body
 }
 
 #middle {
-    clear: both;
-    padding-top: 0px;
-    /*width: 1140px;*/
-    overflow: auto;
-    margin: 0px auto;
-    color: #333;
-   text-align: center;
+  clear: both;
+  padding-top: 5px;
+  /*width: 1140px;*/
+  overflow: auto;
+  margin: 90px auto 0 auto;
+  color: #333;
+  text-align: center;
 
-    padding-bottom:50px;   /* Height of the footer */
+  padding-bottom: 30px;   /* Height of the footer */
 }
 
 .midItem {
@@ -97,112 +214,58 @@ body
 
 #divLeft {
     /*padding: 10px;*/
-    margin-left: 10px;
-    margin-right: 10px;
-    /*margin-right: 140px;*/
+    margin-left: 5px;
+    margin-right: 50px;
 }
 
 #divRight {
-    /*margin-left: 140px;*/
-    margin-left: 10px;
-    margin-right: 10px;
+    margin-left: 50px;
+    margin-right: 5px;
     /*padding: 10px;*/
 }
 
 #footer {
-    clear: both;
-    position:absolute;
-    bottom:0;
-    width:100%;
-    height:20px;   /* Height of the footer */
-}
-
-#divSyncOuter {
-  clear: both;
-  width: 100%;
-  height: 170px;
-  /*border-width: 2px;
-  border-radius: 16px;
-  border-color: #bbb;
-  border-style: solid;*/
-  position: fixed;
-bottom: 0px;
-  /*margin: 160px 0 0 -125px;*/
-  /*padding: 10px;*/
-  text-align: center;
-}
-
-#divSync {
-    background: -webkit-gradient(linear, left top, left bottom, 
-      color-stop(0%,#2981e4), color-stop(100%,#4ba3f6)); /* Chrome,Safari4+ */
-    /*display: inline-block;*/
-    /*padding: 5px 10px 6px;*/
-    color: #fff;
-    text-decoration: none;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-    border-bottom: 1px solid rgba(0,0,0,0.25);
+    /*clear: both;*/
+    background: gray;
     position: absolute;
-    /*cursor: pointer;*/
-    width: 100px;
-    height: 30px;
-    position: fixed;
-    margin: 0px auto 0px auto;
-    /*border-style: dashed;
-  border-radius: 3px;
-  border-width: 3px;
-  border-color: #555;
-  width: 224px;
-  height: 224px;*/
+    bottom: 0px;
+    width: 100%;
+    height: 30px;   /* Height of the footer */
+}
+
+#divButtonSync {
+  clear: both;
+  position:fixed;
+  width:100%;
+  top:0;
+  margin-top:160px;
   text-align: center;
-  margin-right: 100px;
 }
 
 #syncText {
   position: absolute;
   top: 50%;
-  margin-top: -7px;
-  color: white;
-}
-
-#divSyncTableWrapper {
-  width: 100%;
-  float: left;
-}
-
-#divSyncTable {
-  /*position: absolute;*/
-  height: 160px;
-  margin-left: 100px;
-  /*padding-left: 200px;*/
-  /*width: 100%;*/
-  border-width: 2px;
-  border-radius: 16px;
-  border-color: #bbb;
-  border-style: solid;
-  /*overflow: auto;*/
+  margin-top: -10px;
+  color: gray;
 }
 
 #tableLeftWrapper {
-  /*width: 567px;*/
+  width: 567px;
 }
 
 #tableRightWrapper {
-  /*width: 567px;*/
+  width: 567px;
 }
 
 #tableLeft {
   margin: 0 auto;
-  /*width: 540px;*/
+  width: 540px;
   height: auto;
 }
 
 #tableRight {
   margin: 0 auto;
-  /*width: 540px;*/
+  width: 540px;
   height: auto;
 }
 
@@ -214,12 +277,10 @@ bottom: 0px;
     /*margin: 20px 0 20px 0;*/
 }
 
-.fade { opacity: 0.5 }
-
 .tableRow {
   position: relative;
   float: left;
-  margin: 5px;
+  margin: 10px;
   text-align: left;
   overflow: hidden;
   width: 160px;
@@ -248,7 +309,7 @@ bottom: 0px;
 }
 
 .labelbg {
-  z-index: 1000;
+  z-index: 2;
   width: 160px;
   height: 40px;
   background: rgba(0,0,0,0.6);
@@ -258,7 +319,7 @@ bottom: 0px;
 }
 
 .tableRowLabel {
-  z-index: 1000;
+  z-index: 2;
   color:#fff;
   font-size:10pt;
   position: relative;

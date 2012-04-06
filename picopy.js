@@ -3,6 +3,8 @@ var isLocal = true;
 (function(f, $, undefined) {
 
 var v = f.v = f.v || {
+	leftService: null,
+	rightService: null,
 	leftSide: {},
 	rightSide: {},
 	isLeftReady: false,
@@ -19,11 +21,26 @@ var v = f.v = f.v || {
 	testVar: {}
 };
 
+f.toggleCookie = function()
+{
+	if($.cookie("googleLogin") == null)
+	{
+		$.cookie("googleLogin",'asdf');
+		console.log("Cookie set")
+	}
+	else
+	{
+		$.cookie("googleLogin",null);
+		console.log("Cookie deleted");
+	}
+
+}
+
 f.testSync = function()
 {
 	f.clearTable();
 	onLoad();
-	f.toggle($("#tableRowRight0"));
+	f.toggle($("#tableRowLeft0"));
 
 	f.sync();
 }
@@ -36,11 +53,6 @@ f.clearTable = function()
 	});
 
 	$.each($("#tableRight div"), function(index, row)
-	{
-		$(row).remove();
-	});
-
-	$.each($("#divSync div"), function(index, row)
 	{
 		$(row).remove();
 	});
@@ -97,14 +109,19 @@ f.doCompare = function()
 						}
 					}
 				});
+				var row =  '<div id="' + rowPrefix + index + '" class="tableRow" draggable="true"';
+				if(data1 == v.leftData)
+				{
+					row += ' onclick="photoSync.toggle(this);"';
+				}
+				row += '><img class="tableRowImg" id="img' + index + '" src="' + leftAlbum.thumb + '"</img>'
+				 + '<div class="labelbg">'
+				 + '<label class="tableRowLabel" id="title' + index + '">' + leftAlbum.name + '</label>'
+				 + '</div></div>';
 
 				if (!found)
 				{
-					var row =  '<div id="' + rowPrefix + index + '" class="tableRow" onclick="photoSync.toggle(this);" draggable="true">'
-						 + '<img class="tableRowImg" id="img' + index + '" src="' + leftAlbum.thumb + '"</img>'
-						 + '<div class="labelbg">'
-						 + '<label class="tableRowLabel" id="title' + index + '">' + leftAlbum.name + '</label>'
-						 + '</div></div>';
+					
 					table.append(row);
 				}
 			});
@@ -174,36 +191,43 @@ f.uploader = function(id, albumId, images, index, albumOrder, side, rowPrefix)
 	}
 }
 
-f.animateImage = function(id, index, speed, rowPrefix)
+function animateToContainer(objName, oldContainerName, containerName, zIndex, speed)
 {
-	var im = $('#img_'+id+'_'+index);
-	var target = $('#rowOn'+ id);
+	var im = $('#'+objName);
+	var target = $('#'+containerName);
 	var targetPos = target.offset();
 	var offset = im.offset();
 	var oldPos = im.position();
 
-	var oldRow = $('#'+rowPrefix + id);
+	var oldRow = $('#'+oldContainerName);
 	var oldOffset = oldRow.offset();
 	im.appendTo('body');
 
 	im.css(
 	{
-		'zIndex': (500+index),
+		'zIndex': zIndex,
+		'position': 'absolute',
 		'left': offset.left,
 		'top': offset.top
 	});
-	im.animate({
-		'left': '+=' + (targetPos.left - oldOffset.left) + 'px',
-		'top': '+=' + (targetPos.top - oldOffset.top) + 'px'
-	}, speed, function()
-	{
-		target.prepend(im);
-		im.css(
-		{
-			'left': oldPos.left,
-			'top': oldPos.top
-		});
-	});
+	// im.animate({
+	// 	'left': '+=' + (targetPos.left - oldOffset.left) + 'px',
+	// 	'top': '+=' + (targetPos.top - oldOffset.top) + 'px'
+	// }, speed, function()
+	// {
+	// 	target.prepend(im);
+	// 	im.css(
+	// 	{
+	// 		'zIndex': 1,
+	// 		'left': oldPos.left,
+	// 		'top': oldPos.top
+	// 	});
+	// });
+}
+
+f.animateImage = function(id, index, speed, rowPrefix)
+{
+	animateToContainer('img_'+id+'_'+index, rowPrefix + id, 'rowOn' + id, (500+index), speed);
 }
 
 f.animateImages = function($old, images, id, rowPrefix)
@@ -259,7 +283,7 @@ f.sync = function()
 	        $old.css('background-color','rgba(0,0,0,0.6)');
 			var pos = $old.position();
 			var oldOffset = $old.offset();
-			var $new = $old.clone().prependTo('#divSyncTable');
+			var $new = $old.clone().prependTo('#tableRight');
 			$new.attr('id','rowOn' + id);
 			var width = $new.width();
 			$new.css({'width': '0'});
@@ -313,7 +337,7 @@ f.sync = function()
 	}
 	// $("#syncText").animate({'opacity':'0'}, 200);
 	sync($("#tableLeft"), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, "tableRowLeft");
-	sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
+	// sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
 }
 
 function onLoad()
@@ -347,8 +371,146 @@ function onLoad()
 	});
 }
 
+function prepAnimate(src, target)
+{
+	// $('#'+src).attr('targetObj', target);
+	$('#'+target).css('opacity', '0');
+}
+
+function getCloneInBody(obj, doWithOrig)
+{
+	var offset = obj.offset();
+	var objClone = obj.clone();
+	objClone.attr('clone','true');
+	objClone.appendTo('body');
+
+	objClone.css(
+	{
+		'zIndex': 4,
+		'position': 'absolute',
+		'margin': 0,
+		'left': offset.left,
+		'top': offset.top
+	});
+	if(doWithOrig == 'hide')
+	{
+		obj.css('visibility', 'hidden');
+	}
+	return objClone;
+}
+
+function animateIntoPlace(obj, targetObj, speed, doAfter)
+{
+	// var obj = $('#'+objName);
+	// var targetObj = obj.attr('targetObj');
+	var targetOffset = targetObj.offset();
+	var offset = obj.offset();
+	// obj.css('opacity', '0');
+	
+	obj.animate({
+		'left': targetOffset.left,
+		'top': targetOffset.top,
+	}, speed, function()
+		{
+			// if(doAfter == 'delete')
+			// {
+			// 	obj.remove();
+			// }
+			// else if(doAfter == 'reset')
+			// {
+			// 	obj.css('opacity', '1');
+			// }
+			// else if(doAfter == 'hide')
+			// {
+			// 	obj.css('visibility', 'hidden');
+			// }
+		});
+	// return objClone;
+}
+
+f.closeIntro = function()
+{
+	var clone = getCloneInBody($('#logo2'), 'hide');
+	animateIntoPlace(clone, $('#logo'), "slow", 'reset');
+	$("#intro").animate({'opacity': 0}, "slow", function() {
+		$('#intro').hide();
+	});
+	//animateToContainer('img_'+id+'_'+index, rowPrefix + id, 'rowOn' + id, (500+index), speed);
+}
+
+function clickServiceIcon(icon, clone)
+{
+	var orig = clone;
+	var targetName;
+
+	if(orig.attr('service') == null)
+	{
+		if(v.leftService == null)
+		{
+			v.leftService = "left";
+			orig.attr('service', 'leftService');
+			targetName = 'leftService';
+		}
+		else if(v.rightService == null)
+		{
+			v.rightService = "right";
+			orig.attr('service', 'rightService');
+			targetName = 'rightService';
+		}
+		else
+			return;
+	}
+	else
+	{
+		if(orig.attr('service') == 'leftService')
+		{
+			v.leftService = null;
+			orig.attr('service', null);
+			targetName = icon.id;
+		}
+		else if(orig.attr('service') == 'rightService')
+		{
+			v.rightService = null;
+			orig.attr('service', null);
+			targetName = icon.id;
+		}
+	}
+
+	animateIntoPlace(clone, $('#'+targetName), 'fast');
+	// clone.click(function() {
+	// 	animateIntoPlace(clone, this.id, 'fast');
+	// 	if(targetName == 'leftService')
+	// 	{
+	// 		v.leftService = null;
+	// 		console.log("resetting left");
+	// 	}
+	// 	else if(targetName == 'rightService')
+	// 	{
+	// 		v.rightService = null;
+	// 		console.log("resetting right");
+	// 	}
+	// 	clone.click(function() 
+	// 		{
+	// 			clickServiceIcon(clone);
+	// 		});
+	// });
+}
+
 $(window).bind("load", function() {
-	$('#divSync').click(function()
+	if($.cookie("googleLogin") == null)
+	{
+		// $("#intro").animate({'opacity': 1}, "normal");
+		$('#intro').css('opacity', '1');
+		// $($('#logo')
+		console.log("fade in");
+
+		prepAnimate('logo2', 'logo');
+	}
+	else
+	{
+		$('#intro').hide();
+	}
+	$('#divButtonSync').click(function()
 	{
 		f.sync();
 	});
@@ -361,6 +523,19 @@ $(window).bind("load", function() {
 	    	$("#googleProfileImage").attr('src', null);
         });
 	});
+
+	$('.serviceIcon').click(function() {
+		console.log("click service icon");
+		var clone = getCloneInBody($(this));
+		clone.click(function() {
+			clickServiceIcon(this, clone);
+		});
+		clickServiceIcon(this, clone);
+		$(this).css('visibility', 'hidden');
+
+		// animateToContainer('serviceGoogle','introServices','leftService', 4, 2000);
+	})
+
 	onLoad();
 });
 
