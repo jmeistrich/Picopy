@@ -98,22 +98,34 @@ f.doCompare = function()
 					}
 				});
 
-				var row =  '<div id="' + rowPrefix + index + '" class="tableRow" style="position: relative; float: left; margin: 10px; text-align: left; overflow: hidden; width: 160px; height: 160px;" onclick="photoSync.toggle(this);">'
-						 + '<img id="img' + index + '" style="zIndex: 0; width: 160px; height:160px; position: absolute; left: 0px; top: 0px;" src="' + leftAlbum.thumb + '"</img>'
-						 + '<div class="labelbg" style="zIndex: 1000; width: 160px; height: 40px; background: rgba(0,0,0,0.6); position: absolute; left: 0px; top: 120px;">'
-						 + '<label style="zIndex: 1000; color:#fff; font-size:10pt; position: relative; left: 5px; top: 2px;" id="title' + index + '">' + leftAlbum.name + '</label>'
-						 + '</div></div>';
-
 				if (!found)
 				{
-					$(table).append(row);
+					var row =  '<div id="' + rowPrefix + index + '" class="tableRow" onclick="photoSync.toggle(this);" draggable="true">'
+						 + '<img class="tableRowImg" id="img' + index + '" src="' + leftAlbum.thumb + '"</img>'
+						 + '<div class="labelbg">'
+						 + '<label class="tableRowLabel" id="title' + index + '">' + leftAlbum.name + '</label>'
+						 + '</div></div>';
+					table.append(row);
 				}
-				row = $(rowPrefix +index);
+			});
+			$( ".tableRow" ).draggable({
+				helper: 'clone', 
+				appendTo: 'body',
+				revert: 'invalid',
+				start: function(e,ui){
+				   $(this).addClass('fade');
+				   // ui.helper.find('.caption').text("I'm being dragged!");
+				},
+				stop: function(e,ui){
+					console.log($(this).parent());
+				   // $(this).removeClass('fade');
+				   // ui.helper.find('.caption').text("Drag me to my target");
+				}
 			});
 		}
 
-		compareAlbums(v.leftData, v.rightData, '#tableLeft', 'tableRowLeft');
-		compareAlbums(v.rightData, v.leftData, '#tableRight', 'tableRowRight');
+		compareAlbums(v.leftData, v.rightData, $('#tableLeft'), 'tableRowLeft');
+		compareAlbums(v.rightData, v.leftData, $('#tableRight'), 'tableRowRight');
 	}
 }
 
@@ -362,6 +374,11 @@ $(window).bind("load", function() {
 	    transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
 	    	$("#googleProfileImage").attr('src', null);
         });
+	});
+	$('#divSync').droppable({
+		drop: function( event, ui ) {
+			console.log(ui);
+		}
 	});
 	onLoad();
 });
