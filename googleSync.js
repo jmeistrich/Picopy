@@ -74,11 +74,11 @@
 	function loadPicasa(onComplete)
 	{
 		$("#loadingLeft").fadeIn();
-		getPicasaAlbums(googleId, function(albums)
+		getPicasaAlbums(googleId, function(user,albums)
 		{
 			picasaData = albums;
-			// $("#googleProfileImage").attr('src', user.thumbnail);
-			onComplete(picasaData);
+			$("#googleProfileImage").attr('src', user.thumbnail);
+			onComplete(picasaData, user.thumbnail);
 		});
 	}
 
@@ -122,13 +122,17 @@
         });
     }
 
-	function getPicasaAlbums(callback) {
+	function getPicasaAlbums(user, callback) {
         var url = "https://picasaweb.google.com/data/feed/api/user/default?access_token=:user_id&alt=json&kind=album&hl=en_US&access=visible&fields=gphoto:nickname,gphoto:thumbnail,entry(id,link,gphoto:numphotos,media:group(media:content,media:description,media:keywords,media:title,media:thumbnail))";
         url = url.replace(/:user_id/, user);
         // console.log(url);
 
         $.getJSON(url, function(data) {
             // console.log(data);
+            var user = {
+                nickname: data.feed["gphoto$nickname"]["$t"],
+                thumbnail: data.feed["gphoto$thumbnail"]["$t"]
+            }
             var album = null;
             var albums = [];
             $.each(data.feed.entry, function(i, element) {
@@ -144,7 +148,6 @@
                         for (link in links) {
                             if (links[link]["rel"] == "alternate") {
                                 album.link = links[link].href;
-                                break;
                             }
                         }
                     }

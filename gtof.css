@@ -29,6 +29,34 @@ body
   height: 100px;
 }
 
+#services {
+  position: absolute;
+  top: 0px;
+  right: 50px;
+}
+
+.divService {
+  float: left;
+  border-style: solid;
+  border-width: 1px;
+  margin-right: 10px;
+}
+
+.serviceBg {
+  width: 40px;
+  height: 40px;
+  float: left;
+  vertical-align: center;
+}
+
+.serviceText {
+  float: left;
+  /*height: 40px;*/
+  width: 80px;
+  padding: 10px 0 0 5px;
+  vertical-align: center;
+}
+
 #topCenter {
     padding-top: 5px;
     width: 435px;
@@ -108,8 +136,16 @@ body
   border-radius: 3px;
   border-width: 3px;
   border-color: #555;
-  /*width: auto;*/
+  width: 224px;
   height: 224px;
+  text-align: center;
+}
+
+#syncText {
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  color: gray;
 }
 
 #tableLeftWrapper {
@@ -126,7 +162,7 @@ body
   height: auto;
 }
 
-#tableOnFacebook {
+#tableRight {
   margin: 0 auto;
   width: 540px;
   height: auto;

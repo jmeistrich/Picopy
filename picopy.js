@@ -21,13 +21,11 @@ var v = f.v = f.v || {
 
 f.testSync = function()
 {
-	// f.clearTable();
-	// onLoad();
+	f.clearTable();
+	onLoad();
 	f.toggle($("#tableRowRight0"));
 
-	// f.sync();
-
-	// test();
+	f.sync();
 }
 
 f.clearTable = function()
@@ -42,7 +40,7 @@ f.clearTable = function()
 		$(row).remove();
 	});
 
-	$.each($("#divOnBothInner div"), function(index, row)
+	$.each($("#divSync div"), function(index, row)
 	{
 		$(row).remove();
 	});
@@ -90,7 +88,6 @@ f.doCompare = function()
 						{
 							leftAlbum.isPartial = true;
 							leftAlbum.fbId = rightAlbum.id;
-							// console.log(rightAlbum);
 						}
 						else
 						{
@@ -316,6 +313,7 @@ f.sync = function()
 			});
 		});
 	}
+	$("#syncText").animate({'opacity':'0'}, 200);
 	sync($("#tableLeft"), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, "tableRowLeft");
 	sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
 }
@@ -337,13 +335,15 @@ function onLoad()
 		v.leftSide = fakeLeft;
 		v.rightSide = fakeRight;
 	}
-	v.leftSide.load(function(albums) {
-		v.leftData = albums;
+	v.leftSide.load(function(data, pic) {
+		v.leftData = data;
+		$("#service1Bg").attr('src', pic);
 		v.isLeftReady = true;
 		f.doCompare();
 	});
-	v.rightSide.load(function(data) {
+	v.rightSide.load(function(data, pic) {
 		v.rightData = data;
+		$("#service2Bg").attr('src', pic);
 		v.isRightReady = true;
 		f.doCompare();
 	});

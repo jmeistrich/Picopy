@@ -49,6 +49,6 @@
 			}
 			albums.push(album);
 		}
-		onComplete(albums);
+		onComplete(albums, "/fakedata/images/3.JPG");
 	}
 }(window.fakeLeft = window.fakeLeft || {}, jQuery));

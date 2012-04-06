@@ -1,14 +1,15 @@
-(function(f, $, undefined)
+(function (f, $, undefined)
 {
 	var v = f.v = f.v || {
 		onLoadComplete: {},
 		albums: [],
-		accessToken: {}
+		accessToken: {},
+		userPicture: {}
 	}
 
 	f.load = function(onComplete)
 	{
-		onLoadComplete = onComplete;
+		v.onLoadComplete = onComplete;
 		addScript("http://connect.facebook.net/en_US/all.js", loadFacebook);
 	}
 
@@ -34,8 +35,9 @@
 				console.log("facebook is logged in");
 				$(".fb_button_text").text('Facebook Logout');
 				$("#loadingRight").fadeIn();
-				// getFacebookMe();
-				getFacebookAlbums(0);
+				getFacebookMe(function() {
+					getFacebookAlbums(0);
+				});
 
 				transitionDiv('divFacebookLogIn', 'divFacebookLoggedIn', function()
 				{});
@@ -95,13 +97,14 @@
 		_getImages(images, albumId, 0, onComplete);
 	}
 
-	// function getFacebookMe()
-	// {
-	// 	FB.api('/me?fields=picture', function(response)
-	// 	{
-	// 		$("#facebookProfileImage").attr('src', response.picture.url);
-	// 	});
-	// }
+	function getFacebookMe(handler)
+	{
+		FB.api('/me?fields=picture', function(response)
+		{
+			v.userPicture = response.picture.url;
+			handler();
+		});
+	}
 
 	function getFacebookAlbums(offset)
 	{
@@ -110,7 +113,7 @@
 		{
 			if (response.data.length == 0)
 			{
-				onLoadComplete(v.albums);
+				onLoadComplete(v.albums, v.userPicture);
 				// isFBReady = true;
 				// doCompare();	
 			}
