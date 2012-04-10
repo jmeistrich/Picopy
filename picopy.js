@@ -108,20 +108,6 @@ f.doCompare = function()
 					table.append(row);
 				}
 			});
-			$( ".tableRow" ).draggable({
-				helper: 'clone', 
-				appendTo: 'body',
-				revert: 'invalid',
-				start: function(e,ui){
-				   $(this).addClass('fade');
-				   // ui.helper.find('.caption').text("I'm being dragged!");
-				},
-				stop: function(e,ui){
-					console.log($(this).parent());
-				   // $(this).removeClass('fade');
-				   // ui.helper.find('.caption').text("Drag me to my target");
-				}
-			});
 		}
 
 		compareAlbums(v.leftData, v.rightData, $('#tableLeft'), 'tableRowLeft');
@@ -273,7 +259,7 @@ f.sync = function()
 	        $old.css('background-color','rgba(0,0,0,0.6)');
 			var pos = $old.position();
 			var oldOffset = $old.offset();
-			var $new = $old.clone().prependTo('#divSync');
+			var $new = $old.clone().prependTo('#divSyncTable');
 			$new.attr('id','rowOn' + id);
 			var width = $new.width();
 			$new.css({'width': '0'});
@@ -325,7 +311,7 @@ f.sync = function()
 			});
 		});
 	}
-	$("#syncText").animate({'opacity':'0'}, 200);
+	// $("#syncText").animate({'opacity':'0'}, 200);
 	sync($("#tableLeft"), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, "tableRowLeft");
 	sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
 }
@@ -374,11 +360,6 @@ $(window).bind("load", function() {
 	    transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
 	    	$("#googleProfileImage").attr('src', null);
         });
-	});
-	$('#divSync').droppable({
-		drop: function( event, ui ) {
-			console.log(ui);
-		}
 	});
 	onLoad();
 });
