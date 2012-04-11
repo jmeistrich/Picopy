@@ -11,11 +11,13 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-    app.use(express.static(__dirname + '/', { maxAge: oneYear }));
+	console.log("dev");
+    app.use(express.static(__dirname + '/'));
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
+	console.log("prod");
   app.use(express.static(__dirname + '/', { maxAge: oneYear }));
   app.use(express.errorHandler());
 });

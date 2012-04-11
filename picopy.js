@@ -371,20 +371,21 @@ function onLoad()
 	});
 }
 
-function prepAnimate(src, target)
+function hide(target)
 {
 	// $('#'+src).attr('targetObj', target);
-	$('#'+target).css('opacity', '0');
+	// $('#'+target).css('opacity', '0');
+	target.css('visibility', 'hidden');
+
 }
 
-function getCloneInBody(obj, doWithOrig)
+function moveToBody(obj, doWithClone)
 {
 	var offset = obj.offset();
 	var objClone = obj.clone();
-	objClone.attr('clone','true');
-	objClone.appendTo('body');
-
-	objClone.css(
+	objClone.attr('id',obj.attr('id')+'_clone');
+	objClone.insertAfter(obj);
+	obj.css(
 	{
 		'zIndex': 4,
 		'position': 'absolute',
@@ -392,10 +393,11 @@ function getCloneInBody(obj, doWithOrig)
 		'left': offset.left,
 		'top': offset.top
 	});
-	if(doWithOrig == 'hide')
+	if(doWithClone == 'hide')
 	{
-		obj.css('visibility', 'hidden');
+		objClone.css('visibility', 'hidden');
 	}
+	obj.appendTo('body');
 	return objClone;
 }
 
@@ -405,13 +407,20 @@ function animateIntoPlace(obj, targetObj, speed, doAfter)
 	// var targetObj = obj.attr('targetObj');
 	var targetOffset = targetObj.offset();
 	var offset = obj.offset();
-	// obj.css('opacity', '0');
+	var oldIndex = obj.css('zIndex');
+	obj.css('zIndex', '5');
 	
 	obj.animate({
 		'left': targetOffset.left,
 		'top': targetOffset.top,
 	}, speed, function()
 		{
+			obj.css('zIndex', oldIndex);
+			if(doAfter == 'replace')
+			{
+				obj.remove();
+				targetObj.css('visibility', 'visible');
+			}
 			// if(doAfter == 'delete')
 			// {
 			// 	obj.remove();
@@ -430,8 +439,9 @@ function animateIntoPlace(obj, targetObj, speed, doAfter)
 
 f.closeIntro = function()
 {
-	var clone = getCloneInBody($('#logo2'), 'hide');
-	animateIntoPlace(clone, $('#logo'), "slow", 'reset');
+	var obj = $('#logo2');
+	moveToBody(obj, 'hide');
+	animateIntoPlace(obj, $('#logo'), "slow", 'replace');
 	$("#intro").animate({'opacity': 0}, "slow", function() {
 		$('#intro').hide();
 	});
@@ -440,43 +450,42 @@ f.closeIntro = function()
 
 function clickServiceIcon(icon, clone)
 {
-	var orig = clone;
-	var targetName;
+	var target;
 
-	if(orig.attr('service') == null)
+	if(icon.attr('service') == null)
 	{
 		if(v.leftService == null)
 		{
 			v.leftService = "left";
-			orig.attr('service', 'leftService');
-			targetName = 'leftService';
+			icon.attr('service', 'leftService');
+			target = $('#leftService');
 		}
 		else if(v.rightService == null)
 		{
 			v.rightService = "right";
-			orig.attr('service', 'rightService');
-			targetName = 'rightService';
+			icon.attr('service', 'rightService');
+			target = $('#rightService');
 		}
 		else
 			return;
 	}
 	else
 	{
-		if(orig.attr('service') == 'leftService')
+		if(icon.attr('service') == 'leftService')
 		{
 			v.leftService = null;
-			orig.attr('service', null);
-			targetName = icon.id;
+			icon.attr('service', null);
+			target = clone;
 		}
-		else if(orig.attr('service') == 'rightService')
+		else if(icon.attr('service') == 'rightService')
 		{
 			v.rightService = null;
-			orig.attr('service', null);
-			targetName = icon.id;
+			icon.attr('service', null);
+			target = clone;
 		}
 	}
-
-	animateIntoPlace(clone, $('#'+targetName), 'fast');
+// console.log(clone);
+	animateIntoPlace(icon, target, 'fast');
 	// clone.click(function() {
 	// 	animateIntoPlace(clone, this.id, 'fast');
 	// 	if(targetName == 'leftService')
@@ -504,7 +513,7 @@ $(window).bind("load", function() {
 		// $($('#logo')
 		console.log("fade in");
 
-		prepAnimate('logo2', 'logo');
+		hide($('#logo'));
 	}
 	else
 	{
@@ -525,13 +534,18 @@ $(window).bind("load", function() {
 	});
 
 	$('.serviceIcon').click(function() {
-		console.log("click service icon");
-		var clone = getCloneInBody($(this));
-		clone.click(function() {
-			clickServiceIcon(this, clone);
-		});
-		clickServiceIcon(this, clone);
-		$(this).css('visibility', 'hidden');
+		var obj = $(this);
+		var clone = $('#'+obj.attr('id')+'_clone');
+		if(clone.length == 0)
+		{
+			clone = moveToBody($(this), 'hide');	
+		}
+		// console.log($(this).clonedObj);
+		// clone.click(function() {
+		// 	clickServiceIcon(this, clone);
+		// });
+		clickServiceIcon($(this), clone);
+		// $(this).css('opacity', 'hidden');
 
 		// animateToContainer('serviceGoogle','introServices','leftService', 4, 2000);
 	})
