@@ -54,7 +54,7 @@ body
   float: left;
 }
 
-#introServicesSelected div{
+#leftServiceBox, #rightServiceBox{
   width: 100px;
   height: 100px;
   border-style: solid;
@@ -62,8 +62,13 @@ body
   border-color: gray;
 }
 
-#leftService {
+#leftServiceBox {
   margin: 0 10px 0 0;
+}
+
+#leftService {
+  width: 100px;
+  height: 100px;
 }
 
 #serviceArrow {
@@ -71,6 +76,11 @@ body
 }
 
 #rightService {
+  width: 100px;
+  height: 100px;
+}
+
+#rightServiceBox {
   margin: 0 0 0 10px;
 }
 
@@ -85,9 +95,9 @@ body
   width: 100px;
   height: 100px;
   margin: 0 5px 0 5px;
-  border-style: solid;
+  /*border-style: solid;
   border-width: 1;
-  border-color: gray;
+  border-color: gray;*/
   background: lightblue;
   /*position: absolute;*/
   /*cursor: hand;*/

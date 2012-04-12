@@ -210,19 +210,19 @@ function animateToContainer(objName, oldContainerName, containerName, zIndex, sp
 		'left': offset.left,
 		'top': offset.top
 	});
-	// im.animate({
-	// 	'left': '+=' + (targetPos.left - oldOffset.left) + 'px',
-	// 	'top': '+=' + (targetPos.top - oldOffset.top) + 'px'
-	// }, speed, function()
-	// {
-	// 	target.prepend(im);
-	// 	im.css(
-	// 	{
-	// 		'zIndex': 1,
-	// 		'left': oldPos.left,
-	// 		'top': oldPos.top
-	// 	});
-	// });
+	im.animate({
+		'left': '+=' + (targetPos.left - oldOffset.left) + 'px',
+		'top': '+=' + (targetPos.top - oldOffset.top) + 'px'
+	}, speed, function()
+	{
+		target.prepend(im);
+		im.css(
+		{
+			'zIndex': 1,
+			'left': oldPos.left,
+			'top': oldPos.top
+		});
+	});
 }
 
 f.animateImage = function(id, index, speed, rowPrefix)
@@ -376,15 +376,23 @@ function hide(target)
 	// $('#'+src).attr('targetObj', target);
 	// $('#'+target).css('opacity', '0');
 	target.css('visibility', 'hidden');
-
 }
 
-function moveToBody(obj, doWithClone)
+function createClone(obj)
 {
-	var offset = obj.offset();
 	var objClone = obj.clone();
 	objClone.attr('id',obj.attr('id')+'_clone');
 	objClone.insertAfter(obj);
+	// if(doWithClone == 'hide')
+	// {
+		objClone.css('visibility', 'hidden');
+	// }
+	return objClone;
+}
+
+function moveToBody(obj)
+{
+	var offset = obj.offset();
 	obj.css(
 	{
 		'zIndex': 4,
@@ -393,15 +401,10 @@ function moveToBody(obj, doWithClone)
 		'left': offset.left,
 		'top': offset.top
 	});
-	if(doWithClone == 'hide')
-	{
-		objClone.css('visibility', 'hidden');
-	}
 	obj.appendTo('body');
-	return objClone;
 }
 
-function animateIntoPlace(obj, targetObj, speed, doAfter)
+function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 {
 	// var obj = $('#'+objName);
 	// var targetObj = obj.attr('targetObj');
@@ -409,6 +412,7 @@ function animateIntoPlace(obj, targetObj, speed, doAfter)
 	var offset = obj.offset();
 	var oldIndex = obj.css('zIndex');
 	obj.css('zIndex', '5');
+	console.log(targetOffset.left + " " + targetOffset.top);
 	
 	obj.animate({
 		'left': targetOffset.left,
@@ -416,10 +420,27 @@ function animateIntoPlace(obj, targetObj, speed, doAfter)
 	}, speed, function()
 		{
 			obj.css('zIndex', oldIndex);
-			if(doAfter == 'replace')
+			if(doAfter == 'target')
 			{
 				obj.remove();
 				targetObj.css('visibility', 'visible');
+			}
+			else if(doAfter == 'this')
+			{
+				console.log('this');
+				obj.insertBefore(targetObj);
+				obj.css(
+				{
+					// 'zIndex': 1,
+					'position': '',
+					'left': 0,
+					'top': 0
+				});
+				targetObj.hide();
+			}
+			if(handler != null)
+			{
+				handler();
 			}
 			// if(doAfter == 'delete')
 			// {
@@ -440,8 +461,8 @@ function animateIntoPlace(obj, targetObj, speed, doAfter)
 f.closeIntro = function()
 {
 	var obj = $('#logo2');
-	moveToBody(obj, 'hide');
-	animateIntoPlace(obj, $('#logo'), "slow", 'replace');
+	moveToBody(obj);
+	animateIntoPlace(obj, $('#logo'), "slow", 'target');
 	$("#intro").animate({'opacity': 0}, "slow", function() {
 		$('#intro').hide();
 	});
@@ -451,6 +472,9 @@ f.closeIntro = function()
 function clickServiceIcon(icon, clone)
 {
 	var target;
+	var source;
+	var restoreMargin = null;
+	var doWithMargin = null;
 
 	if(icon.attr('service') == null)
 	{
@@ -459,15 +483,18 @@ function clickServiceIcon(icon, clone)
 			v.leftService = "left";
 			icon.attr('service', 'leftService');
 			target = $('#leftService');
+			doWithMargin = 'store';
 		}
 		else if(v.rightService == null)
 		{
 			v.rightService = "right";
 			icon.attr('service', 'rightService');
 			target = $('#rightService');
+			doWithMargin = 'store';
 		}
 		else
 			return;
+		source = clone;
 	}
 	else
 	{
@@ -476,16 +503,43 @@ function clickServiceIcon(icon, clone)
 			v.leftService = null;
 			icon.attr('service', null);
 			target = clone;
+			doWithMargin = 'restore';
+			source = $('#leftService');
 		}
 		else if(icon.attr('service') == 'rightService')
 		{
 			v.rightService = null;
 			icon.attr('service', null);
 			target = clone;
+			doWithMargin = 'restore';
+			source = $('#rightService');
 		}
 	}
 // console.log(clone);
-	animateIntoPlace(icon, target, 'fast');
+	if(doWithMargin == 'store')
+	{
+		console.log('storing');
+		console.log(icon.css('margin'));
+		icon.attr('om', icon.css('margin'));
+		console.log(icon.attr('om'));
+		console.log('asdf');
+	}
+	moveToBody(icon);
+	console.log(source);
+	source.show();
+	animateIntoPlace(icon, target, 'slow', 'this', function() {
+		if(doWithMargin == 'restore')
+		{
+			console.log('restoring');
+			var om = icon.attr('om');
+			console.log(om);
+			if(om != null)
+			{
+				icon.css('margin', om);
+			}
+		}	
+	});
+	
 	// clone.click(function() {
 	// 	animateIntoPlace(clone, this.id, 'fast');
 	// 	if(targetName == 'leftService')
@@ -538,7 +592,7 @@ $(window).bind("load", function() {
 		var clone = $('#'+obj.attr('id')+'_clone');
 		if(clone.length == 0)
 		{
-			clone = moveToBody($(this), 'hide');	
+			clone = createClone($(this));	
 		}
 		// console.log($(this).clonedObj);
 		// clone.click(function() {
