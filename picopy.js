@@ -383,10 +383,7 @@ function createClone(obj)
 	var objClone = obj.clone();
 	objClone.attr('id',obj.attr('id')+'_clone');
 	objClone.insertAfter(obj);
-	// if(doWithClone == 'hide')
-	// {
-		objClone.css('visibility', 'hidden');
-	// }
+	objClone.css('visibility', 'hidden');
 	return objClone;
 }
 
@@ -406,13 +403,11 @@ function moveToBody(obj)
 
 function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 {
-	// var obj = $('#'+objName);
-	// var targetObj = obj.attr('targetObj');
+	moveToBody(obj);
 	var targetOffset = targetObj.offset();
 	var offset = obj.offset();
 	var oldIndex = obj.css('zIndex');
 	obj.css('zIndex', '5');
-	console.log(targetOffset.left + " " + targetOffset.top);
 	
 	obj.animate({
 		'left': targetOffset.left,
@@ -427,7 +422,6 @@ function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 			}
 			else if(doAfter == 'this')
 			{
-				console.log('this');
 				obj.insertBefore(targetObj);
 				obj.css(
 				{
@@ -442,26 +436,13 @@ function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 			{
 				handler();
 			}
-			// if(doAfter == 'delete')
-			// {
-			// 	obj.remove();
-			// }
-			// else if(doAfter == 'reset')
-			// {
-			// 	obj.css('opacity', '1');
-			// }
-			// else if(doAfter == 'hide')
-			// {
-			// 	obj.css('visibility', 'hidden');
-			// }
 		});
-	// return objClone;
 }
 
 f.closeIntro = function()
 {
 	var obj = $('#logo2');
-	moveToBody(obj);
+	var clone = createClone(obj);
 	animateIntoPlace(obj, $('#logo'), "slow", 'target');
 	$("#intro").animate({'opacity': 0}, "slow", function() {
 		$('#intro').hide();
@@ -469,31 +450,37 @@ f.closeIntro = function()
 	//animateToContainer('img_'+id+'_'+index, rowPrefix + id, 'rowOn' + id, (500+index), speed);
 }
 
-function clickServiceIcon(icon, clone)
+function clickServiceIcon(icon)
 {
 	var target;
 	var source;
-	var restoreMargin = null;
-	var doWithMargin = null;
 
-	if(icon.attr('service') == null)
+	var clone = $('#'+icon.attr('id')+'_clone');
+	if(clone.length == 0)
 	{
+		clone = createClone(icon);	
+	}
+
+	var restoring = icon.attr('service') != null;
+
+	if(!restoring)
+	{
+		var name;
 		if(v.leftService == null)
 		{
+			name = "leftService";
 			v.leftService = "left";
-			icon.attr('service', 'leftService');
-			target = $('#leftService');
-			doWithMargin = 'store';
 		}
 		else if(v.rightService == null)
 		{
+			name = "rightService";
 			v.rightService = "right";
-			icon.attr('service', 'rightService');
-			target = $('#rightService');
-			doWithMargin = 'store';
 		}
 		else
 			return;
+
+		icon.attr('service', name);
+		target = $('#'+name);
 		source = clone;
 	}
 	else
@@ -501,62 +488,31 @@ function clickServiceIcon(icon, clone)
 		if(icon.attr('service') == 'leftService')
 		{
 			v.leftService = null;
-			icon.attr('service', null);
-			target = clone;
-			doWithMargin = 'restore';
 			source = $('#leftService');
 		}
 		else if(icon.attr('service') == 'rightService')
 		{
 			v.rightService = null;
-			icon.attr('service', null);
-			target = clone;
-			doWithMargin = 'restore';
 			source = $('#rightService');
 		}
+		icon.attr('service', null);
+		target = clone;
 	}
-// console.log(clone);
-	if(doWithMargin == 'store')
+	if(!restoring)
 	{
-		console.log('storing');
-		console.log(icon.css('margin'));
 		icon.attr('om', icon.css('margin'));
-		console.log(icon.attr('om'));
-		console.log('asdf');
 	}
-	moveToBody(icon);
-	console.log(source);
 	source.show();
-	animateIntoPlace(icon, target, 'slow', 'this', function() {
-		if(doWithMargin == 'restore')
+	animateIntoPlace(icon, target, 'fast', 'this', function() {
+		if(restoring)
 		{
-			console.log('restoring');
 			var om = icon.attr('om');
-			console.log(om);
 			if(om != null)
 			{
 				icon.css('margin', om);
 			}
 		}	
 	});
-	
-	// clone.click(function() {
-	// 	animateIntoPlace(clone, this.id, 'fast');
-	// 	if(targetName == 'leftService')
-	// 	{
-	// 		v.leftService = null;
-	// 		console.log("resetting left");
-	// 	}
-	// 	else if(targetName == 'rightService')
-	// 	{
-	// 		v.rightService = null;
-	// 		console.log("resetting right");
-	// 	}
-	// 	clone.click(function() 
-	// 		{
-	// 			clickServiceIcon(clone);
-	// 		});
-	// });
 }
 
 $(window).bind("load", function() {
@@ -588,20 +544,7 @@ $(window).bind("load", function() {
 	});
 
 	$('.serviceIcon').click(function() {
-		var obj = $(this);
-		var clone = $('#'+obj.attr('id')+'_clone');
-		if(clone.length == 0)
-		{
-			clone = createClone($(this));	
-		}
-		// console.log($(this).clonedObj);
-		// clone.click(function() {
-		// 	clickServiceIcon(this, clone);
-		// });
-		clickServiceIcon($(this), clone);
-		// $(this).css('opacity', 'hidden');
-
-		// animateToContainer('serviceGoogle','introServices','leftService', 4, 2000);
+		clickServiceIcon($(this));
 	})
 
 	onLoad();

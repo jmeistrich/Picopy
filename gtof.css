@@ -147,7 +147,7 @@ body
   position: absolute;
 }
 
-#logo, #logo2 {
+.logo {
   /*position: absolute;*/
 
   background: black;
