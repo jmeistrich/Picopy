@@ -18,7 +18,7 @@ body
   height:100%;
   width: 100%;
   position: absolute;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.8);
   z-index: 3;
   opacity: 0;
   -moz-opacity: 0;
@@ -26,7 +26,7 @@ body
 }
 
 #introBorder {
-  height: 400px;
+  height: 450px;
   width: 600px;
   position: absolute;
   left: 50%;
@@ -42,19 +42,25 @@ body
   height: 100%;
   background: #e9e9e9;
   text-align: center;
-  padding-top: 5px;
+  /*padding-top: 5px;*/
+  /*padding-bottom: 5px;*/
 }
 
-#introServicesSelected {
+.introServicesSelected {
+  /*background: blue;*/
   width: 296px;
   height: 106px;
   margin: 10px auto 0 auto;
 }
-#introServicesSelected div,img{
+
+#introServicesSelected {
+}
+
+.introServicesSelected div,img{
   float: left;
 }
 
-#leftServiceBox, #rightServiceBox{
+#leftService, #rightService{
   width: 100px;
   height: 100px;
   border-style: solid;
@@ -62,26 +68,47 @@ body
   border-color: gray;
 }
 
-#leftServiceBox {
+#leftService {
   margin: 0 10px 0 0;
 }
 
-#leftService {
+/*#leftService {
   width: 100px;
   height: 100px;
-}
+}*/
 
 #serviceArrow {
   margin-top: 20px;
 }
 
-#rightService {
+/*#rightService {
   width: 100px;
   height: 100px;
-}
+}*/
 
 #rightServiceBox {
   margin: 0 0 0 10px;
+}
+
+#introServicesLogin {
+  /*background: green;*/
+  width: 356px;
+  height: 40px;
+  margin: 5px auto;
+}
+
+#leftServiceLogin {
+  float: left;
+  /*background: black;*/
+  width: 166px;
+  height: 40px;
+}
+
+#rightServiceLogin {
+  float: right;
+  /*background: blue;*/
+  width: 166px;
+  height: 40px;
 }
 
 #introServices {
@@ -116,7 +143,6 @@ body
   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
   text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
   border-bottom: 1px solid rgba(0,0,0,0.25);
-  /*cursor: pointer;*/
   width: 100px;
   height: 40px;
   margin: 0px auto 0px auto;
@@ -126,11 +152,16 @@ body
 
 #goText {
   position: relative;
-  top: 13px;
+  font-size: 12pt;
+  /*top: 13px;*/
   /*position: relative;*/
   /*margin: 0 auto 0 auto;*/
   /*margin-top: 7px;*/
   color: white;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  cursor: default;
 }
 
 #container {
@@ -148,17 +179,22 @@ body
 }
 
 .logo {
-  /*position: absolute;*/
-
-  background: black;
+  /*background: black;*/
   margin: 0px auto 0px auto;
 
   width: 400px;
   height: 80px;
 }
 
+#logo2 {
+  background: black;
+}
+
 #services {
   position: absolute;
+  /*background: blue;*/
+  width: 296px;
+  height: 106px;
   top: 5px;
   right: 50px;
 }
@@ -198,7 +234,7 @@ body
   padding-top: 5px;
   /*width: 1140px;*/
   overflow: auto;
-  margin: 90px auto 0 auto;
+  margin: 120px auto 0 auto;
   color: #333;
   text-align: center;
 
@@ -281,7 +317,7 @@ body
 }
 
 #divGoogle {
-    margin: 20px 0 20px 0;
+    /*margin: 0px 0 0px 0;*/
 }
 
 #divFacebook {

@@ -4,48 +4,80 @@
         picasaData: {}
     }
 
+    f.login = function()
+    {
+        var url = "https://accounts.google.com/o/oauth2/auth";
+        var client_id = "905742775678.apps.googleusercontent.com";
+        var redirect_uri = "http://picopy.co";
+        var scope = "https://picasaweb.google.com/data/";
+
+        var str = url + "?scope="+encodeURIComponent(scope)+
+                        "&redirect_uri="+encodeURIComponent(redirect_uri)+
+                        "&response_type=token"+
+                        "&client_id="+client_id;
+
+        $('#googleLogin').click(function()
+        {
+            window.location = str;
+        });
+        $('#googleLogout').click(function()
+        {
+            $.cookie("googleLogin",null);
+            transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
+                // $("#googleProfileImage").attr('src', null);
+            });
+        });
+
+        console.log("Logging in");
+        var token = getHashByName("access_token");
+        if(token)
+        {
+            v.googleId = token;
+            $.cookie("googleLogin", v.googleId);
+
+            document.location.href='#';
+        }
+        else
+        {
+            v.googleId = $.cookie("googleLogin");
+        }
+        if(v.googleId)
+        {
+            var url = "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=" + v.googleId;
+            $.ajax({
+                url: url, 
+                dataType: 'jsonp',
+                success: function(data) {
+                    console.log(data);
+                    if(data.error)
+                    {
+                        v.googleId = undefined;
+                        $.cookie("googleLogin", v.googleId);
+                        transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
+                        });
+                    }
+                    else
+                    {
+                        transitionDiv('divGoogleLogin', 'divGoogleLoggedIn', function() {
+                        });
+                    }
+                },
+                failure: function(data) {
+                    console.log("Failure in google verification:");
+                    console.log(data);
+                }
+            });
+        }
+        else
+        {
+            transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
+            });
+        }
+    }
+
 	f.load = function(onComplete)
 	{
-		var token = getHashByName("access_token");
-		if(token)
-		{
-			googleId = token;
-			$.cookie("googleLogin", googleId);
-
-			document.location.href='#';
-		}
-		else
-		{
-		    googleId = $.cookie("googleLogin");
-		}
-///TODO: Validate the token
-
-		var url = "https://accounts.google.com/o/oauth2/auth";
-		var client_id = "905742775678.apps.googleusercontent.com";
-		var redirect_uri = "http://picopy.co";
-		var scope = "https://picasaweb.google.com/data/";
-
-		var str = url + "?scope="+encodeURIComponent(scope)+
-						"&redirect_uri="+encodeURIComponent(redirect_uri)+
-						"&response_type=token"+
-						"&client_id="+client_id;
-
-		$('#googleLogin').click(function()
-		{
-			window.location = str;
-		});
-
-		if(!googleId)
-	    {
-	        transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
-			});
-		}
-		else
-		{
-	        transitionDiv('divGoogleLogin', 'divGoogleLoggedIn', function() {
-	        	loadPicasa(onComplete);
-	        });
-		}
+        loadPicasa(onComplete);
 	}
 
     f.logout = function()
@@ -74,7 +106,7 @@
 	function loadPicasa(onComplete)
 	{
 		$("#loadingLeft").fadeIn();
-		getPicasaAlbums(googleId, function(user,albums)
+		getPicasaAlbums(v.googleId, function(user,albums)
 		{
 			picasaData = albums;
 			$("#googleProfileImage").attr('src', user.thumbnail);
@@ -84,7 +116,7 @@
 
 	function getPicasaImages(album, callback) {
         var url = "https://picasaweb.google.com/data/feed/api/user/default/albumid/:album_id?access_token=:access_id&alt=json&kind=photo&hl=en_US&imgmax=800&fields=entry(title,content,link,gphoto:numphotos,media:group(media:content,media:thumbnail,media:description))";
-        url = url.replace(/:album_id/, album).replace(/:access_id/,googleId);
+        url = url.replace(/:album_id/, album).replace(/:access_id/,v.googleId);
 
         var image = null;
         var images = [];

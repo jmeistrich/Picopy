@@ -25,16 +25,19 @@
     <div id="fb-root"></div>
     <div id="container">
         <div id="topSection">
-            <div class="logo" id="logo"></div>
+            <div class="logo" id="logo">
+                <!-- <div class="logo" id="logoPlaceholder"></div> -->
+            </div>
             <div id="services">
-                <div class="divService">
+                <div id="servicesTarget"></div>
+                <!-- <div class="divService">
                     <img id="service1Bg" class="serviceBg"></img>
                     <div id="service1text" class="serviceText">Google</div>
                 </div>
                 <div class="divService">
                     <img id="service2Bg" class="serviceBg"></img>
                     <div id="service2text" class="serviceText">Facebook</div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div id="divButtonSync">
@@ -44,21 +47,7 @@
             <div class="middleDivWrapper">
                 <div id="divLeft" style="overflow: auto;" class="midItem">
                     <div class="tableHeader">Only on Google</div>
-                    <div id="divGoogle">
-                        <div id="divGoogleLogin" style="display: none; padding: 2px">
-                            <button id="googleLogin" style="height: 25px;">
-                                <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
-                                <label>Google Login</label>
-                            </button>
-                        </div>
-                        <div id="divGoogleLoggedIn" style="display: none;">
-                            <img id="googleProfileImage" style="float: left; margin-top: 3px; margin-left: 10px;"></img>
-                            <button id="googleLogout" style="height: 25px; margin-left: 10px; float: left;">
-                                <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
-                                <label>Google Logout</label>
-                            </button>
-                        </div>
-                    </div>
+                    
                     <div id="tableLeftWrapper">
                         <div id="tableLeft" class="table">
                         </div>
@@ -69,24 +58,11 @@
             <div class="middleDivWrapper">
                 <div id="divRight" style="overflow: auto;" class="midItem">
                     <div class="tableHeader">On Both</div>
-                    <div id="divFacebook" style="padding: 2px;">
-                        <div id="divFacebookLogIn">
-                            <div style="margin-top: 22px;">
-                                <fb:login-button scope="user_photos, publish_stream" onlogin="facebookSync.onLogin()"></fb:login-button>
-                            </div>
-                        </div>
-                        <div id="divFacebookLoggedIn" style="display: none;">
-                            <img id="facebookProfileImage" style="float: left; margin-top: 10px; margin-left: 10px;"></img>
-                            <span style="float: left; width: 132px; height: 22px; margin-top: 22px; margin-left: 10px;">
-                                <fb:login-button style="width: 132px; height: 15px;" scope="user_photos, publish_stream" onclick="facebookSync.logout()"></fb:login-button>
-                            </span>
+                        <div id="tableRightWrapper">
+                            <div id="tableRight" class="table">
+                            <img id="loadingRight" class="loading" src="loading.gif"></img>
                         </div>
                     </div>
-                    <div id="tableRightWrapper">
-                        <div id="tableRight" class="table">
-                        <img id="loadingRight" class="loading" src="loading.gif"></img>
-                    </div>
-                </div>
                 </div>
             </div>
         </div>
@@ -97,23 +73,56 @@
     <div id="intro">
         <div id="introBorder">
             <div id="introBox">
+                <div style="height: 5px; width: 100%;"></div>
                 <div class="logo" id="logo2"></div>
                 <div id="introText">Select services to sync</div>
-                <div id="introServicesSelected">
-                    <div id="leftServiceBox"><div id="leftService"></div></div>
+                <div id="introServicesSelected" class="introServicesSelected">
+                    <div id="leftService"></div>
                     <img id="serviceArrow" src="Right.png"></img>
-                    <div id="rightServiceBox"><div id="rightService"></div></div>
+                    <div id="rightService"></div>
+                </div>
+                <div id="introServicesLogin">
+                    <div id="leftServiceLogin"></div>
+                    <div id="rightServiceLogin"></div>
                 </div>
                 <div id="introServices">
-                    <img class="serviceIcon" id="serviceGoogle" src="plus-badge.png"></img>
-                    <img class="serviceIcon" id="serviceFacebook" src="f_logo.png"></img>
-                    <img class="serviceIcon" id="serviceFlickr" src="Right.png"></img>
-                    <img class="serviceIcon" id="serviceInstagram" src="Right.png"></img>
+                    <img class="serviceIcon" id="serviceGoogle" src="plus-badge.png" login="divGoogle" js="googleSync"></img>
+                    <img class="serviceIcon" id="serviceFacebook" src="f_logo.png" login="divFacebook" js="facebookSync"></img>
+                    <img class="serviceIcon" id="serviceFakeLeft" src="Right.png" js="fakeLeft"></img>
+                    <img class="serviceIcon" id="serviceFakeRight" src="Right.png" js="fakeRight"></img>
                 </div>
-                <div id="goButton">
+                <button type="button" id="goButton">
                     <div id="goText">Go!</div>
-                </div>
+                </button>
             </div>
+        </div>
+    </div>
+    <div id="divGoogle">
+        <div id="divGoogleLogin" style="display: none; padding: 2px;">
+            <button id="googleLogin" style="height: 25px;">
+                <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
+                <label>Google Login</label>
+            </button>
+        </div>
+        <div id="divGoogleLoggedIn" style="display: none;">
+            <!-- <img id="googleProfileImage" style="float: left; margin-top: 3px; margin-left: 10px;"></img> -->
+            <button id="googleLogout" style="height: 25px;">
+                <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
+                <label>Google Logout</label>
+            </button>
+        </div>
+    </div>
+    <div id="divFacebook" style="padding: 2px;">
+        <div id="divFacebookLogIn">
+            <div>
+                <fb:login-button scope="user_photos, publish_stream" onlogin="facebookSync.onLogin()"></fb:login-button>
+            </div>
+        </div>
+        <div id="divFacebookLoggedIn" style="display: none;">
+            <img id="facebookProfileImage"></img>
+            <span>
+                <fb:login-button style="width: 132px; height: 25px;" scope="user_photos, publish_stream" onclick="facebookSync.logout()"></fb:login-button>
+            </span>
         </div>
     </div>
 </body>

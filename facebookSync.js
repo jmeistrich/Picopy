@@ -7,10 +7,15 @@
 		userPicture: {}
 	}
 
+	f.login = function()
+	{
+		addScript("http://connect.facebook.net/en_US/all.js", loadFacebook);
+	}
+
 	f.load = function(onComplete)
 	{
 		v.onLoadComplete = onComplete;
-		addScript("http://connect.facebook.net/en_US/all.js", loadFacebook);
+		getFacebookAlbums(0);
 	}
 
 	f.logout = function()
@@ -36,7 +41,7 @@
 				$(".fb_button_text").text('Facebook Logout');
 				$("#loadingRight").fadeIn();
 				getFacebookMe(function() {
-					getFacebookAlbums(0);
+					// getFacebookAlbums(0);
 				});
 
 				transitionDiv('divFacebookLogIn', 'divFacebookLoggedIn', function()
@@ -113,7 +118,7 @@
 		{
 			if (response.data.length == 0)
 			{
-				onLoadComplete(v.albums, v.userPicture);
+				v.onLoadComplete(v.albums, v.userPicture);
 				// isFBReady = true;
 				// doCompare();	
 			}

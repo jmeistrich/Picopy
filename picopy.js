@@ -3,17 +3,13 @@ var isLocal = true;
 (function(f, $, undefined) {
 
 var v = f.v = f.v || {
-	leftService: null,
-	rightService: null,
-	leftSide: {},
-	rightSide: {},
-	isLeftReady: false,
-	isRightReady: false,
+	leftSide: null,
+	rightSide: null,
 
-	leftData: {},
-	rightData: {},
+	leftData: null,
+	rightData: null,
 
-	useFakeData: true,
+	useFakeData: false,
 	doUpload: true,
 	albumOrderLeft: [],
 	albumOrderRight: [],
@@ -39,7 +35,7 @@ f.toggleCookie = function()
 f.testSync = function()
 {
 	f.clearTable();
-	onLoad();
+	f.onLoad();
 	f.toggle($("#tableRowLeft0"));
 
 	f.sync();
@@ -76,7 +72,7 @@ f.toggle = function(item)
 
 f.doCompare = function()
 {
-	if (v.isLeftReady && v.isRightReady)
+	if (v.leftData != null && v.rightData != null)
 	{
 		f.clearTable();
 
@@ -85,8 +81,14 @@ f.doCompare = function()
 		$("#divGoogle").fadeOut();
 		$("#divFacebook").fadeOut();
 
-		function compareAlbums(data1, data2, table, rowPrefix)
-		{
+		var data1 = v.leftData;
+		var data2 = v.rightData;
+		var table = $('#tableLeft');
+		var table2 = $('#tableRight');
+		var rowPrefix = 'tableRowLeft';
+
+		// function compareAlbums(data1, data2, table, rowPrefix)
+		// {
 			$.each(data1, function(index, leftAlbum)
 			{
 				var found = false;
@@ -121,14 +123,17 @@ f.doCompare = function()
 
 				if (!found)
 				{
-					
 					table.append(row);
 				}
+				else
+				{
+					$('#tableRight').append(row);
+				}
 			});
-		}
+		// }
 
-		compareAlbums(v.leftData, v.rightData, $('#tableLeft'), 'tableRowLeft');
-		compareAlbums(v.rightData, v.leftData, $('#tableRight'), 'tableRowRight');
+		// compareAlbums(v.leftData, v.rightData, $('#tableLeft'), 'tableRowLeft');
+		// compareAlbums(v.rightData, v.leftData, $('#tableRight'), 'tableRowRight');
 	}
 }
 
@@ -340,23 +345,18 @@ f.sync = function()
 	// sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
 }
 
-function onLoad()
+f.onLoad = function()
 {
-	if(isLocal)
-	{
-		addScript("live.js");
-		$("#logo").css('background-color','blue');
-	}
-	if(!v.useFakeData)
-	{
-		v.leftSide = googleSync;
-		v.rightSide = facebookSync;
-	}
-	else
-	{
-		v.leftSide = fakeLeft;
-		v.rightSide = fakeRight;
-	}
+	// if(!v.useFakeData)
+	// {
+	// 	v.leftSide = googleSync;
+	// 	v.rightSide = facebookSync;
+	// }
+	// else
+	// {
+	// 	v.leftSide = fakeLeft;
+	// 	v.rightSide = fakeRight;
+	// }
 	v.leftSide.load(function(data, pic) {
 		v.leftData = data;
 		$("#service1Bg").attr('src', pic);
@@ -401,8 +401,20 @@ function moveToBody(obj)
 	obj.appendTo('body');
 }
 
-function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
+function animateIntoPlace(params)
 {
+	var obj = params.obj;
+	var targetObj = params.targetObj;
+	var speed = params.speed;
+	var doAfter = params.doAfter;
+	var handler = params.handler;
+	if(doAfter == 'restore')
+		targetObj = $('#'+obj.attr('id')+'_clone');
+	else
+	{
+		obj.attr('om', obj.css('margin'));
+		createClone(obj);
+	}
 	moveToBody(obj);
 	var targetOffset = targetObj.offset();
 	var offset = obj.offset();
@@ -415,14 +427,26 @@ function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 	}, speed, function()
 		{
 			obj.css('zIndex', oldIndex);
-			if(doAfter == 'target')
+			// if(doAfter == 'target')
+			// {
+			// 	obj.remove();
+			// 	targetObj.css('visibility', 'visible');
+			// }
+			// else if(doAfter == 'this')
+			// {
+			// 	obj.insertBefore(targetObj);
+			// 	obj.css(
+			// 	{
+			// 		// 'zIndex': 1,
+			// 		'position': '',
+			// 		'left': 0,
+			// 		'top': 0
+			// 	});
+			// 	targetObj.hide();
+			// }
+			if(doAfter == 'append')
 			{
-				obj.remove();
-				targetObj.css('visibility', 'visible');
-			}
-			else if(doAfter == 'this')
-			{
-				obj.insertBefore(targetObj);
+				targetObj.append(obj);
 				obj.css(
 				{
 					// 'zIndex': 1,
@@ -430,7 +454,23 @@ function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 					'left': 0,
 					'top': 0
 				});
-				targetObj.hide();
+			}
+			else if(doAfter == 'restore')
+			{
+				obj.insertBefore(targetObj);
+				var om = obj.attr('om');
+				if(om != null)
+				{
+					obj.css('margin', om);
+				}
+				obj.css(
+				{
+					// 'zIndex': 1,
+					'position': '',
+					'left': 0,
+					'top': 0
+				});
+				targetObj.remove();
 			}
 			if(handler != null)
 			{
@@ -439,11 +479,18 @@ function animateIntoPlace(obj, targetObj, speed, doAfter, handler)
 		});
 }
 
+f.openIntro = function()
+{
+	$('#intro').show();
+	$("#intro").animate({'opacity': 1}, "slow");
+	animateIntoPlace({obj: $('#logo2'), speed:"slow", doAfter:'restore'});
+	animateIntoPlace({obj:$('#introServicesSelected'), speed:'slow', doAfter:'restore'});
+}
+
 f.closeIntro = function()
 {
-	var obj = $('#logo2');
-	var clone = createClone(obj);
-	animateIntoPlace(obj, $('#logo'), "slow", 'target');
+	animateIntoPlace({obj:$('#logo2'), targetObj: $('#logo'), speed:'slow', doAfter:'append'});
+	animateIntoPlace({obj:$('#introServicesSelected'), targetObj:$('#services'), speed:'slow', doAfter:'append'});
 	$("#intro").animate({'opacity': 0}, "slow", function() {
 		$('#intro').hide();
 	});
@@ -452,102 +499,99 @@ f.closeIntro = function()
 
 function clickServiceIcon(icon)
 {
+	if($('#intro').css('opacity') < 1)
+		return;
 	var target;
-	var source;
-
-	var clone = $('#'+icon.attr('id')+'_clone');
-	if(clone.length == 0)
-	{
-		clone = createClone(icon);	
-	}
-
 	var restoring = icon.attr('service') != null;
+	var js = window[icon.attr('js')];
+
+	var doAfter = 'append';
 
 	if(!restoring)
 	{
 		var name;
-		if(v.leftService == null)
+		if(v.leftSide == null)
 		{
 			name = "leftService";
-			v.leftService = "left";
+			v.leftSide = js;
 		}
-		else if(v.rightService == null)
+		else if(v.rightSide == null)
 		{
 			name = "rightService";
-			v.rightService = "right";
+			v.rightSide = js;
 		}
 		else
 			return;
 
 		icon.attr('service', name);
 		target = $('#'+name);
-		source = clone;
 	}
 	else
 	{
+		doAfter = 'restore';
 		if(icon.attr('service') == 'leftService')
 		{
-			v.leftService = null;
-			source = $('#leftService');
+			v.leftSide = null;
 		}
 		else if(icon.attr('service') == 'rightService')
 		{
-			v.rightService = null;
-			source = $('#rightService');
+			v.rightSide = null;
 		}
 		icon.attr('service', null);
-		target = clone;
 	}
-	if(!restoring)
-	{
-		icon.attr('om', icon.css('margin'));
-	}
-	source.show();
-	animateIntoPlace(icon, target, 'fast', 'this', function() {
-		if(restoring)
+	animateIntoPlace({obj: icon, targetObj: target, speed: 'fast', doAfter: doAfter, handler: function() {
+		if(!restoring)
 		{
-			var om = icon.attr('om');
-			if(om != null)
+			var login = icon.attr('login');
+			if(login)
 			{
-				icon.css('margin', om);
+				$('#'+target.attr('id')+'Login').append($('#'+login));
 			}
-		}	
-	});
+			js['login']();
+		}
+	}});
 }
 
 $(window).bind("load", function() {
-	if($.cookie("googleLogin") == null)
-	{
+	// if($.cookie("googleLogin") == null)
+	// {
 		// $("#intro").animate({'opacity': 1}, "normal");
 		$('#intro').css('opacity', '1');
 		// $($('#logo')
 		console.log("fade in");
 
-		hide($('#logo'));
-	}
-	else
-	{
-		$('#intro').hide();
-	}
+		// hide($('#logo'));
+	// }
+	// else
+	// {
+	// 	$('#intro').hide();
+	// }
 	$('#divButtonSync').click(function()
 	{
 		f.sync();
-	});
-
-	$('#googleLogout').click(function()
-	{
-		$.cookie("googleLogin",null);
-	    f.clearTable();
-	    transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
-	    	$("#googleProfileImage").attr('src', null);
-        });
 	});
 
 	$('.serviceIcon').click(function() {
 		clickServiceIcon($(this));
 	})
 
-	onLoad();
+	$('#goButton').click(function() {
+		console.log("clicked");
+		f.closeIntro();
+		f.onLoad();
+	});
+
+	$('#services').click(function() {
+		f.openIntro();
+	});
+
+	if(isLocal)
+	{
+		addScript("live.js");
+		// $("#logo").css('background-color','blue');
+	}
+
+	// onLoad();
 });
 
 $(function()

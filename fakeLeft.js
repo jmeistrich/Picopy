@@ -1,10 +1,10 @@
 (function (f, $, undefined) {
+	f.login = function()
+	{}
+
 	f.load = function(onComplete)
 	{
-		if($.cookie("googleLogin") != null)
-		{
-			generateFakeAlbums(onComplete);
-		}
+		generateFakeAlbums(onComplete);
 	}
 
 	f.createAlbum = function(albumName, link, onComplete)
@@ -52,6 +52,6 @@
 			}
 			albums.push(album);
 		}
-		onComplete(albums, "/fakedata/images/3.JPG");
+		onComplete(albums, "/fakedata/images/1.JPG");
 	}
 }(window.fakeLeft = window.fakeLeft || {}, jQuery));

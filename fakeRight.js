@@ -1,4 +1,12 @@
 (function (f, $, undefined) {
+	f.login = function()
+	{}
+
+	f.load = function(onComplete)
+	{
+		generateFakeAlbums(onComplete);
+	}
+
 	f.createAlbum = function(albumName, link, onComplete)
 	{
 		onComplete("1");
@@ -7,11 +15,6 @@
 	f.uploadImage = function(albumId, img, onComplete)
 	{
 		setTimeout(onComplete, 100);
-	}
-
-	f.load = function(onComplete)
-	{
-		generateFakeAlbums(onComplete);
 	}
 
 	f.getImages = function(id, onComplete)
@@ -45,7 +48,7 @@
 				id: i+8,
 				numphotos: 34,
 				name: "Chiang Mai2",
-				thumb: "/fakedata/images/1.JPG"
+				thumb: "/fakedata/images/2.JPG"
 			}
 			albums.push(album);
 		}
