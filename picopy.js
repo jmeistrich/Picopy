@@ -5,6 +5,7 @@ var isLocal = true;
 var v = f.v = f.v || {
 	leftSide: null,
 	rightSide: null,
+	leftname: null,
 
 	leftData: null,
 	rightData: null,
@@ -29,7 +30,6 @@ f.toggleCookie = function()
 		$.cookie("googleLogin",null);
 		console.log("Cookie deleted");
 	}
-
 }
 
 f.testSync = function()
@@ -357,6 +357,7 @@ f.onLoad = function()
 	// 	v.leftSide = fakeLeft;
 	// 	v.rightSide = fakeRight;
 	// }
+	$('#leftServiceName').html(v.leftName);
 	v.leftSide.load(function(data, pic) {
 		v.leftData = data;
 		$("#service1Bg").attr('src', pic);
@@ -390,6 +391,22 @@ function createClone(obj)
 function moveToBody(obj)
 {
 	var offset = obj.offset();
+	// var scale = obj.css('scale');
+	// console.log(scale);
+	// if(scale)
+	// {
+	// 	console.log(offset);
+	// 	console.log(offset.top * scale);
+	// 	offset.left *= scale;
+	// 	offset.top *= scale;
+	// }
+	var sol = obj.attr('sol');
+	// console.log("SOL " + (offset.left - sol));
+	if(sol)
+		offset.left -= sol;
+	var sot = obj.attr('sot');
+	if(sot)
+		offset.top -= sot;
 	obj.css(
 	{
 		'zIndex': 4,
@@ -408,11 +425,13 @@ function animateIntoPlace(params)
 	var speed = params.speed;
 	var doAfter = params.doAfter;
 	var handler = params.handler;
+	var scale = params.scale;
 	if(doAfter == 'restore')
 		targetObj = $('#'+obj.attr('id')+'_clone');
 	else
 	{
 		obj.attr('om', obj.css('margin'));
+		// obj.attr('op', obj.offset());
 		createClone(obj);
 	}
 	moveToBody(obj);
@@ -420,10 +439,22 @@ function animateIntoPlace(params)
 	var offset = obj.offset();
 	var oldIndex = obj.css('zIndex');
 	obj.css('zIndex', '5');
+
+	var scaleOffset = {left: 0, top: 0};
+	if(scale && scale < 1)
+	{
+		scaleOffset.left = obj.width() * (1-scale) * 0.5;
+		scaleOffset.top = obj.height() * (1-scale) * 0.5;
+
+		// console.log(obj.width());
+		targetOffset.left -= scaleOffset.left;
+		targetOffset.top -= scaleOffset.top;
+	}
 	
-	obj.animate({
+	obj.transition({
 		'left': targetOffset.left,
 		'top': targetOffset.top,
+		'scale': scale,
 	}, speed, function()
 		{
 			obj.css('zIndex', oldIndex);
@@ -452,8 +483,12 @@ function animateIntoPlace(params)
 					// 'zIndex': 1,
 					'position': '',
 					'left': 0,
-					'top': 0
+					'top': 0,
+					'margin-left': -scaleOffset.left,
+					'margin-top': -scaleOffset.top
 				});
+				obj.attr('sol', scaleOffset.left);
+				obj.attr('sot', scaleOffset.top);
 			}
 			else if(doAfter == 'restore')
 			{
@@ -471,6 +506,8 @@ function animateIntoPlace(params)
 					'top': 0
 				});
 				targetObj.remove();
+				obj.attr('sol', '');
+				obj.attr('sot', '');
 			}
 			if(handler != null)
 			{
@@ -484,70 +521,98 @@ f.openIntro = function()
 	$('#intro').show();
 	$("#intro").animate({'opacity': 1}, "slow");
 	animateIntoPlace({obj: $('#logo2'), speed:"slow", doAfter:'restore'});
-	animateIntoPlace({obj:$('#introServicesSelected'), speed:'slow', doAfter:'restore'});
+	animateIntoPlace({obj:$('#introServicesSelectedBox'), speed:'slow', scale: '1', doAfter:'restore', handler:function(){
+		$('#introServicesLogin').show();
+	}});
+	setTimeout(function(){
+		$('#introServicesSelectedBox').css({'height': '+=30px'});
+		$(".service").animate({'borderWidth': '3px'}, 0);
+	}, 200);
+	
 }
 
 f.closeIntro = function()
 {
+	$('#introServicesLogin').hide();
+	console.log($("#rightService"));
+	$(".service").animate({'borderWidth': '0px'}, "slow");
 	animateIntoPlace({obj:$('#logo2'), targetObj: $('#logo'), speed:'slow', doAfter:'append'});
-	animateIntoPlace({obj:$('#introServicesSelected'), targetObj:$('#services'), speed:'slow', doAfter:'append'});
+	animateIntoPlace({obj:$('#introServicesSelectedBox'), targetObj:$('#services'), speed:'slow', scale: '0.6', doAfter:'append'});
 	$("#intro").animate({'opacity': 0}, "slow", function() {
 		$('#intro').hide();
 	});
+	setTimeout(function(){
+		$('#introServicesSelectedBox').css({'height': '-=30px'});
+	}, 200);
+	
 	//animateToContainer('img_'+id+'_'+index, rowPrefix + id, 'rowOn' + id, (500+index), speed);
 }
 
-function clickServiceIcon(icon)
+function clickServiceIcon(icon, force)
 {
 	if($('#intro').css('opacity') < 1)
 		return;
 	var target;
 	var restoring = icon.attr('service') != null;
-	var js = window[icon.attr('js')];
+	var serviceName = icon.attr('name');
+	var js = window[serviceName+'Sync'];
+	var login = $('#div'+serviceName);
 
 	var doAfter = 'append';
-
+	var name;
 	if(!restoring)
 	{
-		var name;
 		if(v.leftSide == null)
 		{
 			name = "leftService";
 			v.leftSide = js;
+			v.leftName = serviceName;
+			$.cookie('left', icon.attr('id'));
 		}
 		else if(v.rightSide == null)
 		{
 			name = "rightService";
 			v.rightSide = js;
+			$.cookie('right', icon.attr('id'));
 		}
 		else
 			return;
 
 		icon.attr('service', name);
 		target = $('#'+name);
+		$('#'+name+'Text').hide();
 	}
 	else
 	{
 		doAfter = 'restore';
-		if(icon.attr('service') == 'leftService')
+		name = icon.attr('service');
+		if(name == 'leftService')
 		{
 			v.leftSide = null;
+			$.cookie('left', null);
 		}
-		else if(icon.attr('service') == 'rightService')
+		else if(name == 'rightService')
 		{
 			v.rightSide = null;
+			$.cookie('right', null);
 		}
 		icon.attr('service', null);
+		login.hide();
 	}
-	animateIntoPlace({obj: icon, targetObj: target, speed: 'fast', doAfter: doAfter, handler: function() {
+	var speed = force ? 0 : 'fast';
+	animateIntoPlace({obj: icon, targetObj: target, speed: speed, doAfter: doAfter, handler: function() {
 		if(!restoring)
 		{
-			var login = icon.attr('login');
+			login.show();
 			if(login)
 			{
-				$('#'+target.attr('id')+'Login').append($('#'+login));
+				$('#'+target.attr('id')+'Login').append(login);
 			}
 			js['login']();
+		}
+		else
+		{
+			$('#'+name+'Text').show();
 		}
 	}});
 }
@@ -558,7 +623,28 @@ $(window).bind("load", function() {
 		// $("#intro").animate({'opacity': 1}, "normal");
 		$('#intro').css('opacity', '1');
 		// $($('#logo')
-		console.log("fade in");
+
+		if(!v.useFakeData)
+		{
+			$('#serviceFakeLeft').remove();
+			$('#serviceFakeRight').remove();
+		}
+		else
+		{
+			$('#serviceGoogle').remove();
+			$('#serviceFacebook').remove();
+		}
+
+		var left = $.cookie('left');
+		var right = $.cookie('right');
+		if(left)
+		{
+			clickServiceIcon($('#'+left), true);
+		}
+		if(right)
+		{
+			clickServiceIcon($('#'+right), true);
+		}
 
 		// hide($('#logo'));
 	// }

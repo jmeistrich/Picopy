@@ -193,4 +193,4 @@
         });
     }
 
-}( window.googleSync = window.googleSync || {}, jQuery ));
+}( window.GoogleSync = window.GoogleSync || {}, jQuery ));

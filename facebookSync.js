@@ -200,4 +200,4 @@
 		});
 	}
 
-}(window.facebookSync = window.facebookSync || {}, jQuery));
+}(window.FacebookSync = window.FacebookSync || {}, jQuery));

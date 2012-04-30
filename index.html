@@ -7,6 +7,7 @@
 <script type="text/javascript" src="helpers.js"></script>
 <script type="text/javascript" src="cookie.js"></script>
 <script type="text/javascript" src="jquery.color.js"></script>
+<script type="text/javascript" src="jquery.transit.min.js"></script>
 <script type="text/javascript" src="picopy.js"></script>
 <script type="text/javascript" src="googleSync.js"></script>
 <script type="text/javascript" src="facebookSync.js"></script>
@@ -29,7 +30,7 @@
                 <!-- <div class="logo" id="logoPlaceholder"></div> -->
             </div>
             <div id="services">
-                <div id="servicesTarget"></div>
+                <!-- <div id="servicesTarget"></div> -->
                 <!-- <div class="divService">
                     <img id="service1Bg" class="serviceBg"></img>
                     <div id="service1text" class="serviceText">Google</div>
@@ -45,23 +46,18 @@
         </div>
         <div id="middle">
             <div class="middleDivWrapper">
-                <div id="divLeft" style="overflow: auto;" class="midItem">
-                    <div class="tableHeader">Only on Google</div>
-                    
-                    <div id="tableLeftWrapper">
-                        <div id="tableLeft" class="table">
-                        </div>
-                        <img id="loadingLeft" class="loading" src="loading.gif"></img>
+                <div id="divLeft">
+                    <div class="tableHeader whiteBox">Only on <span id="leftServiceName"></span></div>
+                    <div id="tableLeftWrapper" class="midItem">
+                        <div id="tableLeft" class="table"></div>
                     </div>
                 </div>
             </div>
             <div class="middleDivWrapper">
-                <div id="divRight" style="overflow: auto;" class="midItem">
-                    <div class="tableHeader">On Both</div>
-                        <div id="tableRightWrapper">
-                            <div id="tableRight" class="table">
-                            <img id="loadingRight" class="loading" src="loading.gif"></img>
-                        </div>
+                <div id="divRight" >
+                    <div class="tableHeader whiteBox">On Both</div>
+                    <div id="tableRightWrapper" class="midItem">
+                        <div id="tableRight" class="table"></div>
                     </div>
                 </div>
             </div>
@@ -73,23 +69,29 @@
     <div id="intro">
         <div id="introBorder">
             <div id="introBox">
-                <div style="height: 5px; width: 100%;"></div>
-                <div class="logo" id="logo2"></div>
-                <div id="introText">Select services to sync</div>
-                <div id="introServicesSelected" class="introServicesSelected">
-                    <div id="leftService"></div>
-                    <img id="serviceArrow" src="Right.png"></img>
-                    <div id="rightService"></div>
+                <!-- <div style="height: 5px; width: 100%;"></div> -->
+                <div class="logo" id="logo2">Picopy</div>
+                <div id="introText" class="whiteBox introItem">Select services to sync</div>
+                <div id="introServicesSelectedWrapper">
+                    <div id="introServicesSelectedBox" class="whiteBox introItem">
+                        <div id="introServicesSelected" class="introServicesSelected">
+                            <div id="leftService" class="service"><div id="leftServiceText" class="serviceText">From</div></div>
+                            <img id="serviceArrow" src="Right.png"></img>
+                            <div id="rightService" class="service"><div id="rightServiceText" class="serviceText">To</div></div>
+                        </div>
+                        <div id="introServicesLogin">
+                            <div id="leftServiceLogin"></div>
+                            <div id="rightServiceLogin"></div>
+                        </div>
+                    </div>
                 </div>
-                <div id="introServicesLogin">
-                    <div id="leftServiceLogin"></div>
-                    <div id="rightServiceLogin"></div>
-                </div>
-                <div id="introServices">
-                    <img class="serviceIcon" id="serviceGoogle" src="plus-badge.png" login="divGoogle" js="googleSync"></img>
-                    <img class="serviceIcon" id="serviceFacebook" src="f_logo.png" login="divFacebook" js="facebookSync"></img>
-                    <img class="serviceIcon" id="serviceFakeLeft" src="Right.png" js="fakeLeft"></img>
-                    <img class="serviceIcon" id="serviceFakeRight" src="Right.png" js="fakeRight"></img>
+                <div id="introServicesWrapper" class="whiteBox introItem">
+                    <div id="introServices">
+                        <img class="serviceIcon" id="serviceGoogle" name="Google" src="plus-badge.png"></img>
+                        <div class="serviceIcon" id="serviceFacebook" name="Facebook"><img id="facebookIcon" src="f_logo.png"></img></div>
+                        <img class="serviceIcon" id="serviceFakeLeft" src="Right.png" js="fakeLeft"></img>
+                        <img class="serviceIcon" id="serviceFakeRight" src="Right.png" js="fakeRight"></img>
+                    </div>
                 </div>
                 <button type="button" id="goButton">
                     <div id="goText">Go!</div>
