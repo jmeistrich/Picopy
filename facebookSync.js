@@ -21,7 +21,7 @@
 
 	f.logout = function()
 	{
-		console.log("logging out of facebook");;
+		// console.log("logging out of facebook");;
 		FB.logout(function(response)
 		{
 			$(".fb_button_text").text('Facebook Login');
@@ -35,12 +35,12 @@
 
 	f.onLogin = function()
 	{
-		console.log("onLogin");
+		// console.log("onLogin");
 		FB.getLoginStatus(function(response)
 		{
 			if (response.status === 'connected')
 			{
-				console.log("facebook is logged in");
+				// console.log("facebook is logged in");
 				$(".fb_button_text").text('Facebook Logout');
 				$("#loadingRight").fadeIn();
 				getFacebookMe(function() {
@@ -89,13 +89,13 @@
 		{
 			if (!response || response.error)
 			{
-				alert('Error occured');
+				// alert('Error occured');
 				console.log('Error occured');
 				console.log(response.error);
 			}
 			else
 			{
-				console.log(img.large + ' Post ID: ' + response.id);
+				// console.log(img.large + ' Post ID: ' + response.id);
 				onComplete();
 			}
 		});
@@ -164,7 +164,7 @@
 		var address = '/' + albumId + '/photos?limit=25&offset=' + offset;
 		FB.api(address, function(response)
 		{
-			console.log(address);
+			// console.log(address);
 			if (response.data.length == 0)
 			{
 				onComplete(images);

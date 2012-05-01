@@ -30,7 +30,7 @@
             });
         });
 
-        console.log("Logging in");
+        // console.log("Logging in");
         var token = getHashByName("access_token");
         if(token)
         {
@@ -50,7 +50,6 @@
                 url: url, 
                 dataType: 'jsonp',
                 success: function(data) {
-                    console.log(data);
                     if(data.error)
                     {
                         v.googleId = undefined;
@@ -65,11 +64,13 @@
                         $('#googleLogin').remove('highlightError');
                         transitionDiv('divGoogleLogin', 'divGoogleLoggedIn', function() {
                         });
+
+                        f.createAlbum("asdf", "asdf");
                     }
                 },
                 failure: function(data) {
-                    console.log("Failure in google verification:");
-                    console.log(data);
+                    // console.log("Failure in google verification:");
+                    // console.log(data);
                 }
             });
         }
@@ -88,7 +89,7 @@
 
     f.logout = function()
     {
-        console.log("Logout");
+        // console.log("Logout");
     }
 
     f.onLogin = function()

@@ -32,12 +32,12 @@ body
 }
 
 #introBorder {
-  height: 475px;
+  height: 490px;
   width: 600px;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: -225px 0 0 -303px;
+  margin: -245px 0 0 -300px;
   /*border-style: dashed;
   border-width: 1;
   border-color: gray;*/
@@ -190,6 +190,14 @@ body
   -khtml-user-select: none;
   user-select: none;
   cursor: default;
+}
+
+#messageNotSupported {
+  position: absolute;
+    font-weight: 300;
+  width: 400px;
+  font-size: 16px;
+  margin-top: 38px;
 }
 
 #container {

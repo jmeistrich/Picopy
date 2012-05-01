@@ -13,14 +13,6 @@
 <script type="text/javascript" src="facebookSync.js"></script>
 <script type="text/javascript" src="fakeLeft.js"></script>
 <script type="text/javascript" src="fakeRight.js"></script>
-<script type="text/javascript" src="live.js"></script>
-<script type="text/javascript" src="debug.js"></script>
-<script type="text/javascript">
-    Debug.addHotkey("s", "photoSync.testSync");
-    Debug.addHotkey("c", "photoSync.doCompare");
-    Debug.addHotkey("x", "photoSync.toggleCookie");
-    Debug.addHotkey("i", "photoSync.closeIntro");
-</script>
 </head>
 <body>
     <div id="fb-root"></div>
@@ -56,7 +48,7 @@
             <div id="introBorder">
                 <div id="introBox">
                     <div class="logo" id="logo2">Picopy</div>
-                    <div id="introText" class="whiteBox introItem">Select services to sync</div>
+                    <div id="introText" class="whiteBox introItem">Login to services to sync</div>
                     <div id="introServicesSelectedWrapper">
                         <div id="introServicesSelectedBox" class="whiteBox introItem">
                             <div id="introServicesSelected" class="introServicesSelected">
@@ -71,6 +63,7 @@
                         </div>
                     </div>
                     <div id="introServicesWrapper" class="whiteBox introItem">
+                        <div id="messageNotSupported">Sorry, other services are not yet supported</div>
                         <div id="introServices">
                             <img class="serviceIcon" id="serviceGoogle" name="Google" src="plus-badge.png"></img>
                             <div class="serviceIcon" id="serviceFacebook" name="Facebook"><img id="facebookIcon" src="f_logo.png"></img></div>

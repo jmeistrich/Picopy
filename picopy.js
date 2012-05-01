@@ -13,33 +13,8 @@ var v = f.v = f.v || {
 	useFakeData: false,
 	doUpload: true,
 	albumOrderLeft: [],
-	albumOrderRight: [],
-
-	testVar: {}
+	albumOrderRight: []
 };
-
-f.toggleCookie = function()
-{
-	if($.cookie("googleLogin") == null)
-	{
-		$.cookie("googleLogin",'asdf');
-		console.log("Cookie set")
-	}
-	else
-	{
-		$.cookie("googleLogin",null);
-		console.log("Cookie deleted");
-	}
-}
-
-f.testSync = function()
-{
-	f.clearTable();
-	f.onLoad();
-	f.toggle($("#tableRowLeft0"));
-
-	f.sync();
-}
 
 f.clearTable = function()
 {
@@ -534,7 +509,6 @@ f.openIntro = function()
 f.closeIntro = function()
 {
 	$('#introServicesLogin').hide();
-	console.log($("#rightService"));
 	$(".service").animate({'borderWidth': '0px'}, "slow");
 	animateIntoPlace({obj:$('#logo2'), targetObj: $('#logo'), speed:'slow', doAfter:'append'});
 	animateIntoPlace({obj:$('#introServicesSelectedBox'), targetObj:$('#services'), speed:'slow', scale: '0.6', doAfter:'append'});
@@ -644,17 +618,19 @@ $(window).bind("load", function() {
 			$('#serviceFacebook').remove();
 		}
 
-		var left = $.cookie('left');
-		var right = $.cookie('right');
-		if(left)
-		{
-			clickServiceIcon($('#'+left), true);
-		}
-		if(right)
-		{
-			clickServiceIcon($('#'+right), true);
-		}
+		// var left = $.cookie('left');
+		// var right = $.cookie('right');
+		// if(left)
+		// {
+		// 	clickServiceIcon($('#'+left), true);
+		// }
+		// if(right)
+		// {
+		// 	clickServiceIcon($('#'+right), true);
+		// }
 
+clickServiceIcon($('#serviceGoogle'), true);
+clickServiceIcon($('#serviceFacebook'), true);
 		// hide($('#logo'));
 	// }
 	// else
@@ -667,11 +643,11 @@ $(window).bind("load", function() {
 	});
 
 	$('.serviceIcon').click(function() {
-		clickServiceIcon($(this));
+		// clickServiceIcon($(this));
 	})
 
 	$('#goButton').click(function() {
-		console.log("clicked");
+		// console.log("clicked");
 		if(!v.leftSide)
 		{
 			f.highlight($('#leftService'));
@@ -706,7 +682,7 @@ $(window).bind("load", function() {
 
 	if(isLocal)
 	{
-		addScript("live.js");
+		// addScript("live.js");
 		// $("#logo").css('background-color','blue');
 	}
 
