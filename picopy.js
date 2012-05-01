@@ -617,6 +617,15 @@ function clickServiceIcon(icon, force)
 	}});
 }
 
+f.highlight = function(elem)
+{
+	elem.stop();
+	elem.css({
+		backgroundColor: '#f22'
+	}).animate({backgroundColor: 'rgba(0,0,0,0)'},2000);
+	// elem.addClass('highlightError');
+}
+
 $(window).bind("load", function() {
 	// if($.cookie("googleLogin") == null)
 	// {
@@ -663,8 +672,32 @@ $(window).bind("load", function() {
 
 	$('#goButton').click(function() {
 		console.log("clicked");
-		f.closeIntro();
-		f.onLoad();
+		if(!v.leftSide)
+		{
+			f.highlight($('#leftService'));
+		}
+		else if(!v.leftSide.v.loggedIn)
+		{
+			v.leftSide.highlight();
+		}
+		if(!v.rightSide)
+		{
+			f.highlight($('#rightService'));
+		}
+		else if(!v.rightSide.v.loggedIn)
+		{
+			v.rightSide.highlight();
+		}
+		if(v.leftSide && v.rightSide && v.leftSide.v.loggedIn && v.rightSide.v.loggedIn)
+		{
+			f.closeIntro();
+			f.onLoad();	
+		}
+		// f.highlight($('#googleLogin'));
+		// f.highlight($('.fb_button'));
+		// console.log($('#facebookLogin'));
+		// f.closeIntro();
+		// f.onLoad();
 	});
 
 	$('#services').click(function() {

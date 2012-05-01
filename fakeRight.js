@@ -22,6 +22,10 @@
 		generateFakeImages(id, onComplete);
 	}
 
+	f.highlight = function()
+    {
+    }
+
 	function generateFakeImages(id, onComplete)
 	{
 		var images = [];

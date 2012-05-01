@@ -4,7 +4,8 @@
 		onLoadComplete: {},
 		albums: [],
 		accessToken: {},
-		userPicture: {}
+		userPicture: {},
+		loggedIn: false
 	}
 
 	f.login = function()
@@ -24,6 +25,7 @@
 		FB.logout(function(response)
 		{
 			$(".fb_button_text").text('Facebook Login');
+			v.loggedIn = false;
 			transitionDiv('divFacebookLoggedIn', 'divFacebookLogIn', function()
 			{
 				$("#facebookProfileImage").attr('src', null);
@@ -33,6 +35,7 @@
 
 	f.onLogin = function()
 	{
+		console.log("onLogin");
 		FB.getLoginStatus(function(response)
 		{
 			if (response.status === 'connected')
@@ -43,12 +46,14 @@
 				getFacebookMe(function() {
 					// getFacebookAlbums(0);
 				});
-
+				v.loggedIn = true;
+		        $('.fb_button').removeClass('highlightError');
 				transitionDiv('divFacebookLogIn', 'divFacebookLoggedIn', function()
 				{});
 			}
 			else
 			{
+				v.loggedIn = false;
 				transitionDiv('divFacebookLoggedIn', 'divFacebookLogIn', function()
 				{
 					$("#facebookProfileImage").attr('src', null);
@@ -101,6 +106,11 @@
 		var images = [];
 		_getImages(images, albumId, 0, onComplete);
 	}
+
+	f.highlight = function()
+    {
+        $('.fb_button').addClass('highlightError');
+    }
 
 	function getFacebookMe(handler)
 	{

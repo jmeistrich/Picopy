@@ -1,7 +1,8 @@
 (function (f, $, undefined) {
     var v = f.v = f.v || {
         googleId: "",
-        picasaData: {}
+        picasaData: {},
+        loggedIn: false
     }
 
     f.login = function()
@@ -23,6 +24,7 @@
         $('#googleLogout').click(function()
         {
             $.cookie("googleLogin",null);
+            v.loggedIn = false;
             transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
                 // $("#googleProfileImage").attr('src', null);
             });
@@ -53,11 +55,14 @@
                     {
                         v.googleId = undefined;
                         $.cookie("googleLogin", v.googleId);
+                        v.loggedIn = false;
                         transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
                         });
                     }
                     else
                     {
+                        v.loggedIn = true;
+                        $('#googleLogin').remove('highlightError');
                         transitionDiv('divGoogleLogin', 'divGoogleLoggedIn', function() {
                         });
                     }
@@ -70,6 +75,7 @@
         }
         else
         {
+            v.loggedIn = false;
             transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
             });
         }
@@ -82,6 +88,7 @@
 
     f.logout = function()
     {
+        console.log("Logout");
     }
 
     f.onLogin = function()
@@ -102,6 +109,11 @@
 			onComplete(ims);
 		});
 	}
+
+    f.highlight = function()
+    {
+        $('#googleLogin').addClass('highlightError');
+    }
 
 	function loadPicasa(onComplete)
 	{

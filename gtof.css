@@ -12,7 +12,12 @@ body
     font-size: 13px;
     color: #333333;
     background: #e9e9e9;
-    -webkit-transform: translate3d(0, 0, 0);
+    /*-webkit-transform: translate3d(0, 0, 0);*/
+}
+
+#wrapper {
+  -webkit-transform: translate3d(0, 0, 0);
+  height: 100%;
 }
 
 #intro {
@@ -27,7 +32,7 @@ body
 }
 
 #introBorder {
-  height: 470px;
+  height: 475px;
   width: 600px;
   position: absolute;
   left: 50%;
@@ -290,7 +295,7 @@ body
   text-align: center;
   margin: 0 15px;
 
-  padding-bottom: 30px;   /* Height of the footer */
+  /*padding-bottom: 30px;*/   /* Height of the footer */
 }
 
 .midItem {
@@ -327,30 +332,24 @@ body
     /*padding: 10px;*/
 }
 
-#footer {
-    /*clear: both;*/
-    background: gray;
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-    height: 30px;   /* Height of the footer */
-}
-
 #divButtonSync {
   clear: both;
   position:fixed;
-  width:100%;
+  width:64px;
+  height:64px;
   top:0;
-  margin-top:160px;
+  left: 50%;
+  top: 50%;
+  margin: -32px 0 0 -32px;
   text-align: center;
 }
 
-#syncText {
+/*#syncText {
   position: absolute;
   top: 50%;
   margin-top: -10px;
   color: gray;
-}
+}*/
 
 #tableLeftWrapper {
   /*width: 567px;*/
@@ -372,12 +371,14 @@ body
   height: auto;
 }
 
-#divGoogle {
-    /*margin: 0px 0 0px 0;*/
+#googleLogin, #googleLogout {
+  height: 25px;
 }
 
-#divFacebook {
-    /*margin: 20px 0 20px 0;*/
+.highlightError {
+  border-width:3px;
+    border-style:solid;
+    border-color:red;
 }
 
 .tableRow {
