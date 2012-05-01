@@ -26,11 +26,9 @@
             $.cookie("googleLogin",null);
             v.loggedIn = false;
             transitionDiv('divGoogleLoggedIn', 'divGoogleLogin', function() {
-                // $("#googleProfileImage").attr('src', null);
             });
         });
 
-        // console.log("Logging in");
         var token = getHashByName("access_token");
         if(token)
         {
@@ -69,8 +67,8 @@
                     }
                 },
                 failure: function(data) {
-                    // console.log("Failure in google verification:");
-                    // console.log(data);
+                    console.log("Failure in google verification:");
+                    console.log(data);
                 }
             });
         }
@@ -89,7 +87,6 @@
 
     f.logout = function()
     {
-        // console.log("Logout");
     }
 
     f.onLogin = function()
@@ -135,7 +132,6 @@
         var images = [];
         $.getJSON(url, function(data) {
             $.each(data.feed.entry, function(i, element) {
-                // console.log(element);
                 image = element["media$group"]["media$content"][0];
                 image.large = element["content"].src;
                 image.title = element.title["$t"];
@@ -170,10 +166,8 @@
 	function getPicasaAlbums(user, callback) {
         var url = "https://picasaweb.google.com/data/feed/api/user/default?access_token=:user_id&alt=json&kind=album&hl=en_US&access=visible&fields=gphoto:nickname,gphoto:thumbnail,entry(id,link,gphoto:numphotos,media:group(media:content,media:description,media:keywords,media:title,media:thumbnail))";
         url = url.replace(/:user_id/, user);
-        // console.log(url);
 
         $.getJSON(url, function(data) {
-            // console.log(data);
             var user = {
                 nickname: data.feed["gphoto$nickname"]["$t"],
                 thumbnail: data.feed["gphoto$thumbnail"]["$t"]
@@ -197,13 +191,9 @@
                         }
                     }
                 });
-                // album.images = function(callback) {
-                //     $.picasa.images(user, album.id, callback);
-                // }
                 albums.push(album);
             });
             callback(user, albums);
         });
     }
-
 }( window.GoogleSync = window.GoogleSync || {}, jQuery ));

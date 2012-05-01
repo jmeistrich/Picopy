@@ -13,12 +13,17 @@
 <script type="text/javascript" src="facebookSync.js"></script>
 <script type="text/javascript" src="fakeLeft.js"></script>
 <script type="text/javascript" src="fakeRight.js"></script>
+
 </head>
 <body>
     <div id="fb-root"></div>
     <div id="wrapper">
         <div id="container">
             <div id="topSection">
+                <div id="about" class="whiteBox">
+                    <div id="createdBy">Created by: <a href="http://mei.st">Jay Meistrich</a></div>
+                    <div id="sourceLink">Source available on <a href="http://github.com/jayzus/Picopy">GitHub</a></div>
+                </div>
                 <div class="logo" id="logo"></div>
                 <div id="services"></div>
             </div>
@@ -27,6 +32,7 @@
                     <div id="divLeft">
                         <div class="tableHeader whiteBox">Only on <span id="leftServiceName"></span></div>
                         <div id="tableLeftWrapper" class="midItem">
+                            <img class="loading" src="loading.gif"></img>
                             <div id="tableLeft" class="table"></div>
                         </div>
                     </div>
@@ -35,6 +41,7 @@
                     <div id="divRight" >
                         <div class="tableHeader whiteBox">On Both</div>
                         <div id="tableRightWrapper" class="midItem">
+                            <img class="loading" src="loading.gif"></img>
                             <div id="tableRight" class="table"></div>
                         </div>
                     </div>

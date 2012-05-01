@@ -4,7 +4,6 @@
 		onLoadComplete: {},
 		albums: [],
 		accessToken: {},
-		userPicture: {},
 		loggedIn: false
 	}
 
@@ -21,7 +20,6 @@
 
 	f.logout = function()
 	{
-		// console.log("logging out of facebook");;
 		FB.logout(function(response)
 		{
 			$(".fb_button_text").text('Facebook Login');
@@ -35,17 +33,12 @@
 
 	f.onLogin = function()
 	{
-		// console.log("onLogin");
 		FB.getLoginStatus(function(response)
 		{
 			if (response.status === 'connected')
 			{
-				// console.log("facebook is logged in");
 				$(".fb_button_text").text('Facebook Logout');
 				$("#loadingRight").fadeIn();
-				getFacebookMe(function() {
-					// getFacebookAlbums(0);
-				});
 				v.loggedIn = true;
 		        $('.fb_button').removeClass('highlightError');
 				transitionDiv('divFacebookLogIn', 'divFacebookLoggedIn', function()
@@ -71,7 +64,7 @@
 		{
 			if (!response || response.error)
 			{
-				alert('Error occured');
+				console.log('Facebook: Error creating album');
 			}
 			else
 			{
@@ -89,13 +82,11 @@
 		{
 			if (!response || response.error)
 			{
-				// alert('Error occured');
-				console.log('Error occured');
+				console.log('Facebook: Error uploading image');
 				console.log(response.error);
 			}
 			else
 			{
-				// console.log(img.large + ' Post ID: ' + response.id);
 				onComplete();
 			}
 		});
@@ -112,15 +103,6 @@
         $('.fb_button').addClass('highlightError');
     }
 
-	function getFacebookMe(handler)
-	{
-		FB.api('/me?fields=picture', function(response)
-		{
-			v.userPicture = response.picture.url;
-			handler();
-		});
-	}
-
 	function getFacebookAlbums(offset)
 	{
 		var address = '/me/albums?limit=25&offset=' + offset;
@@ -128,9 +110,7 @@
 		{
 			if (response.data.length == 0)
 			{
-				v.onLoadComplete(v.albums, v.userPicture);
-				// isFBReady = true;
-				// doCompare();	
+				v.onLoadComplete(v.albums);
 			}
 			else
 			{
@@ -146,12 +126,6 @@
 						thumb: "https://graph.facebook.com/"+element.id+"/picture&type=album&access_token="+v.access_token,
 						link: element.link
 					}
-					// console.log(album.thumb);
-					// FB.api(album.thumb, function(resp) {
-					// 	console.log(album.thumb);
-					// 	console.log(resp);
-					// })
-					// console.log(album);
 					v.albums.push(album);
 				}
 				getFacebookAlbums(offset + 25);
@@ -164,7 +138,6 @@
 		var address = '/' + albumId + '/photos?limit=25&offset=' + offset;
 		FB.api(address, function(response)
 		{
-			// console.log(address);
 			if (response.data.length == 0)
 			{
 				onComplete(images);
@@ -174,7 +147,6 @@
 				for (var i = 0; i < response.data.length; i++)
 				{
 					images.push(response.data[i]);
-					//TODO: Match the picasa style here
 				}
 				_getImages(images, albumId, offset + 25, onComplete);
 			}
@@ -187,10 +159,8 @@
 		{
 			appId: '122592874445629',
 			status: true,
-			// check login status
 			cookie: true,
-			// enable cookies to allow the server to access the session
-			xfbml: true // parse XFBML
+			xfbml: true
 		});
 
 		FB.getLoginStatus(function(response)
@@ -204,10 +174,8 @@
 			else
 			{
 				$(".fb_button_text").text('Facebook Login');
-				transitionDiv('divFacebookLoggedIn', 'divFacebookLogIn', function()
-				{});
+				transitionDiv('divFacebookLoggedIn', 'divFacebookLogIn');
 			}
 		});
 	}
-
 }(window.FacebookSync = window.FacebookSync || {}, jQuery));

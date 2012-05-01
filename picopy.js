@@ -49,6 +49,7 @@ f.doCompare = function()
 {
 	if (v.leftData != null && v.rightData != null)
 	{
+		$('.loading').hide();
 		f.clearTable();
 
 		$("#loadingLeft").fadeOut();
@@ -62,53 +63,47 @@ f.doCompare = function()
 		var table2 = $('#tableRight');
 		var rowPrefix = 'tableRowLeft';
 
-		// function compareAlbums(data1, data2, table, rowPrefix)
-		// {
-			$.each(data1, function(index, leftAlbum)
+		$.each(data1, function(index, leftAlbum)
+		{
+			var found = false;
+			var albumName = leftAlbum.name;
+
+			$.each(data2, function(i, rightAlbum)
 			{
-				var found = false;
-				var albumName = leftAlbum.name;
-
-				$.each(data2, function(i, rightAlbum)
+				if(leftAlbum.name == rightAlbum.name)
 				{
-					if(leftAlbum.name == rightAlbum.name)
+					if(leftAlbum.count != rightAlbum.count)
 					{
-						if(leftAlbum.count != rightAlbum.count)
-						{
-							leftAlbum.isPartial = true;
-							leftAlbum.fbId = rightAlbum.id;
-						}
-						else
-						{
-							found = true;
-							leftAlbum.found = true;
-							rightAlbum.found = true;
-						}
+						leftAlbum.isPartial = true;
+						leftAlbum.fbId = rightAlbum.id;
 					}
-				});
-				var row =  '<div id="' + rowPrefix + index + '" class="tableRow" draggable="true"';
-				if(data1 == v.leftData)
-				{
-					row += ' onclick="photoSync.toggle(this);"';
-				}
-				row += '><img class="tableRowImg" id="img' + index + '" src="' + leftAlbum.thumb + '"</img>'
-				 + '<div class="labelbg">'
-				 + '<label class="tableRowLabel" id="title' + index + '">' + leftAlbum.name + '</label>'
-				 + '</div></div>';
-
-				if (!found)
-				{
-					table.append(row);
-				}
-				else
-				{
-					$('#tableRight').append(row);
+					else
+					{
+						found = true;
+						leftAlbum.found = true;
+						rightAlbum.found = true;
+					}
 				}
 			});
-		// }
+			var row =  '<div id="' + rowPrefix + index + '" class="tableRow" draggable="true"';
+			if(data1 == v.leftData)
+			{
+				row += ' onclick="photoSync.toggle(this);"';
+			}
+			row += '><img class="tableRowImg" id="img' + index + '" src="' + leftAlbum.thumb + '"</img>'
+			 + '<div class="labelbg">'
+			 + '<label class="tableRowLabel" id="title' + index + '">' + leftAlbum.name + '</label>'
+			 + '</div></div>';
 
-		// compareAlbums(v.leftData, v.rightData, $('#tableLeft'), 'tableRowLeft');
-		// compareAlbums(v.rightData, v.leftData, $('#tableRight'), 'tableRowRight');
+			if (!found)
+			{
+				table.append(row);
+			}
+			else
+			{
+				$('#tableRight').append(row);
+			}
+		});
 	}
 }
 
@@ -229,7 +224,6 @@ f.animateImages = function($old, images, id, rowPrefix)
 			var newImg = $(document.createElement('img'));
 			newImg.attr('id','img_' + id + '_' + i);
 			newImg.attr('src', images[i].minThumb);
-			//TODO: add some random to loading
 			newImg.css({
 				'position': 'absolute',
 				'left': ((Math.floor(i % numWide) * size)) + 'px',
@@ -270,7 +264,8 @@ f.sync = function()
 			$new.animate({'opacity': 1, 'width': width+'px'}, "normal");
 			$new.find('img').remove();
 			albumOrder.push(id);
-			side.getImages(id, function(ims) {
+			side.getImages(id, function(ims) 
+			{
 			    // The actual upload code
 		    
 				var albumName = $("#title" + id).html();
@@ -315,33 +310,20 @@ f.sync = function()
 			});
 		});
 	}
-	// $("#syncText").animate({'opacity':'0'}, 200);
 	sync($("#tableLeft"), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, "tableRowLeft");
-	// sync($("#tableRight"), v.rightSide, v.leftSide, v.rightData, v.albumOrderRight, "tableRowRight");
 }
 
 f.onLoad = function()
 {
-	// if(!v.useFakeData)
-	// {
-	// 	v.leftSide = googleSync;
-	// 	v.rightSide = facebookSync;
-	// }
-	// else
-	// {
-	// 	v.leftSide = fakeLeft;
-	// 	v.rightSide = fakeRight;
-	// }
+	$('.loading').show();
 	$('#leftServiceName').html(v.leftName);
-	v.leftSide.load(function(data, pic) {
+	v.leftSide.load(function(data) {
 		v.leftData = data;
-		$("#service1Bg").attr('src', pic);
 		v.isLeftReady = true;
 		f.doCompare();
 	});
-	v.rightSide.load(function(data, pic) {
+	v.rightSide.load(function(data) {
 		v.rightData = data;
-		$("#service2Bg").attr('src', pic);
 		v.isRightReady = true;
 		f.doCompare();
 	});
@@ -349,8 +331,6 @@ f.onLoad = function()
 
 function hide(target)
 {
-	// $('#'+src).attr('targetObj', target);
-	// $('#'+target).css('opacity', '0');
 	target.css('visibility', 'hidden');
 }
 
@@ -366,17 +346,7 @@ function createClone(obj)
 function moveToBody(obj)
 {
 	var offset = obj.offset();
-	// var scale = obj.css('scale');
-	// console.log(scale);
-	// if(scale)
-	// {
-	// 	console.log(offset);
-	// 	console.log(offset.top * scale);
-	// 	offset.left *= scale;
-	// 	offset.top *= scale;
-	// }
 	var sol = obj.attr('sol');
-	// console.log("SOL " + (offset.left - sol));
 	if(sol)
 		offset.left -= sol;
 	var sot = obj.attr('sot');
@@ -406,7 +376,6 @@ function animateIntoPlace(params)
 	else
 	{
 		obj.attr('om', obj.css('margin'));
-		// obj.attr('op', obj.offset());
 		createClone(obj);
 	}
 	moveToBody(obj);
@@ -421,7 +390,6 @@ function animateIntoPlace(params)
 		scaleOffset.left = obj.width() * (1-scale) * 0.5;
 		scaleOffset.top = obj.height() * (1-scale) * 0.5;
 
-		// console.log(obj.width());
 		targetOffset.left -= scaleOffset.left;
 		targetOffset.top -= scaleOffset.top;
 	}
@@ -431,64 +399,47 @@ function animateIntoPlace(params)
 		'top': targetOffset.top,
 		'scale': scale,
 	}, speed, function()
+	{
+		obj.css('zIndex', oldIndex);
+		if(doAfter == 'append')
 		{
-			obj.css('zIndex', oldIndex);
-			// if(doAfter == 'target')
-			// {
-			// 	obj.remove();
-			// 	targetObj.css('visibility', 'visible');
-			// }
-			// else if(doAfter == 'this')
-			// {
-			// 	obj.insertBefore(targetObj);
-			// 	obj.css(
-			// 	{
-			// 		// 'zIndex': 1,
-			// 		'position': '',
-			// 		'left': 0,
-			// 		'top': 0
-			// 	});
-			// 	targetObj.hide();
-			// }
-			if(doAfter == 'append')
+			targetObj.append(obj);
+			obj.css(
 			{
-				targetObj.append(obj);
-				obj.css(
-				{
-					// 'zIndex': 1,
-					'position': '',
-					'left': 0,
-					'top': 0,
-					'margin-left': -scaleOffset.left,
-					'margin-top': -scaleOffset.top
-				});
-				obj.attr('sol', scaleOffset.left);
-				obj.attr('sot', scaleOffset.top);
-			}
-			else if(doAfter == 'restore')
+				// 'zIndex': 1,
+				'position': '',
+				'left': 0,
+				'top': 0,
+				'margin-left': -scaleOffset.left,
+				'margin-top': -scaleOffset.top
+			});
+			obj.attr('sol', scaleOffset.left);
+			obj.attr('sot', scaleOffset.top);
+		}
+		else if(doAfter == 'restore')
+		{
+			obj.insertBefore(targetObj);
+			var om = obj.attr('om');
+			if(om != null)
 			{
-				obj.insertBefore(targetObj);
-				var om = obj.attr('om');
-				if(om != null)
-				{
-					obj.css('margin', om);
-				}
-				obj.css(
-				{
-					// 'zIndex': 1,
-					'position': '',
-					'left': 0,
-					'top': 0
-				});
-				targetObj.remove();
-				obj.attr('sol', '');
-				obj.attr('sot', '');
+				obj.css('margin', om);
 			}
-			if(handler != null)
+			obj.css(
 			{
-				handler();
-			}
-		});
+				// 'zIndex': 1,
+				'position': '',
+				'left': 0,
+				'top': 0
+			});
+			targetObj.remove();
+			obj.attr('sol', '');
+			obj.attr('sot', '');
+		}
+		if(handler != null)
+		{
+			handler();
+		}
+	});
 }
 
 f.openIntro = function()
@@ -518,8 +469,6 @@ f.closeIntro = function()
 	setTimeout(function(){
 		$('#introServicesSelectedBox').css({'height': '-=30px'});
 	}, 200);
-	
-	//animateToContainer('img_'+id+'_'+index, rowPrefix + id, 'rowOn' + id, (500+index), speed);
 }
 
 function clickServiceIcon(icon, force)
@@ -597,57 +546,35 @@ f.highlight = function(elem)
 	elem.css({
 		backgroundColor: '#f22'
 	}).animate({backgroundColor: 'rgba(0,0,0,0)'},2000);
-	// elem.addClass('highlightError');
 }
 
 $(window).bind("load", function() {
-	// if($.cookie("googleLogin") == null)
-	// {
-		// $("#intro").animate({'opacity': 1}, "normal");
-		$('#intro').css('opacity', '1');
-		// $($('#logo')
+	$('#intro').css('opacity', '1');
 
-		if(!v.useFakeData)
-		{
-			$('#serviceFakeLeft').remove();
-			$('#serviceFakeRight').remove();
-		}
-		else
-		{
-			$('#serviceGoogle').remove();
-			$('#serviceFacebook').remove();
-		}
-
-		// var left = $.cookie('left');
-		// var right = $.cookie('right');
-		// if(left)
-		// {
-		// 	clickServiceIcon($('#'+left), true);
-		// }
-		// if(right)
-		// {
-		// 	clickServiceIcon($('#'+right), true);
-		// }
-
-clickServiceIcon($('#serviceGoogle'), true);
-clickServiceIcon($('#serviceFacebook'), true);
-		// hide($('#logo'));
-	// }
-	// else
-	// {
-	// 	$('#intro').hide();
-	// }
+	if(!v.useFakeData)
+	{
+		$('#serviceFakeLeft').remove();
+		$('#serviceFakeRight').remove();
+	}
+	else
+	{
+		$('#serviceGoogle').remove();
+		$('#serviceFacebook').remove();
+	}
 	$('#divButtonSync').click(function()
 	{
 		f.sync();
 	});
 
-	$('.serviceIcon').click(function() {
+// Note: Since only Google -> Facebook is supported, add as default
+	clickServiceIcon($('#serviceGoogle'), true);
+	clickServiceIcon($('#serviceFacebook'), true);
+// Note: If we had more services we would enable this
+	// $('.serviceIcon').click(function() {
 		// clickServiceIcon($(this));
-	})
+	// })
 
 	$('#goButton').click(function() {
-		// console.log("clicked");
 		if(!v.leftSide)
 		{
 			f.highlight($('#leftService'));
@@ -669,11 +596,6 @@ clickServiceIcon($('#serviceFacebook'), true);
 			f.closeIntro();
 			f.onLoad();	
 		}
-		// f.highlight($('#googleLogin'));
-		// f.highlight($('.fb_button'));
-		// console.log($('#facebookLogin'));
-		// f.closeIntro();
-		// f.onLoad();
 	});
 
 	$('#services').click(function() {
@@ -681,12 +603,7 @@ clickServiceIcon($('#serviceFacebook'), true);
 	});
 
 	if(isLocal)
-	{
-		// addScript("live.js");
-		// $("#logo").css('background-color','blue');
-	}
-
-	// onLoad();
+		addScript('live.js');
 });
 
 $(function()
