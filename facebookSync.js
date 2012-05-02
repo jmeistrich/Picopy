@@ -82,8 +82,9 @@
 		{
 			if (!response || response.error)
 			{
-				console.log('Facebook: Error uploading image');
+				console.log('Facebook: Error uploading image, trying again.');
 				console.log(response.error);
+				f.uploadImage(albumId, img, onComplete);
 			}
 			else
 			{

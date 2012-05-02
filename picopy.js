@@ -3,7 +3,7 @@
 var v = f.v = f.v || {
 	leftSide: null,
 	rightSide: null,
-	leftname: null,
+	leftName: null,
 
 	leftData: null,
 	rightData: null,
@@ -206,8 +206,9 @@ f.animateImage = function(id, index, speed, rowPrefix)
 f.animateImages = function($old, images, id, rowPrefix)
 {
 	var num = images.length;
-	var numWide = Math.floor(Math.sqrt(num) * 4 / 3);
-	var size = Math.floor(Math.sqrt(160*120/num));
+	var numWide = Math.ceil(Math.sqrt(num));
+	var numHigh = Math.floor(num / numWide);
+	var size = 160/Math.max(numWide,numHigh);
 	
 	$.each(images, function(i, image)
 	{
