@@ -1,10 +1,11 @@
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
 <title>Picopy</title>
-<link rel="stylesheet" type="text/css" href="gtof.css" />
+<link rel="stylesheet" type="text/css" href="gtof-min.css" />
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
-<script type="text/javascript" src="helpers.js"></script>
+<script type="text/javascript" src="picopy-min.js"></script>
+<!-- The unoptimized scripts: -->
+<!-- <link rel="stylesheet" type="text/css" href="gtof.css" />
 <script type="text/javascript" src="cookie.js"></script>
 <script type="text/javascript" src="jquery.color.js"></script>
 <script type="text/javascript" src="jquery.transit.min.js"></script>
@@ -12,12 +13,11 @@
 <script type="text/javascript" src="googleSync.js"></script>
 <script type="text/javascript" src="facebookSync.js"></script>
 <script type="text/javascript" src="fakeLeft.js"></script>
-<script type="text/javascript" src="fakeRight.js"></script>
-
+<script type="text/javascript" src="fakeRight.js"></script> -->
 </head>
 <body>
     <div id="fb-root"></div>
-    <div id="wrapper">
+    <div class="wrapper">
         <div id="container">
             <div id="topSection">
                 <div id="about" class="whiteBox">
@@ -48,68 +48,68 @@
                 </div>
             </div>
         </div>
-        <div id="divButtonSync">
-            <input id="buttonSync" type="image" src="Right.png" />
-        </div>
-        <div id="intro">
-            <div id="introBorder">
-                <div id="introBox">
-                    <div class="logo" id="logo2">Picopy</div>
-                    <div id="introText" class="whiteBox introItem">Login to services to sync</div>
-                    <div id="introServicesSelectedWrapper">
-                        <div id="introServicesSelectedBox" class="whiteBox introItem">
-                            <div id="introServicesSelected" class="introServicesSelected">
-                                <div id="leftService" class="service"><div id="leftServiceText" class="serviceText">From</div></div>
-                                <img id="serviceArrow" src="Right.png"></img>
-                                <div id="rightService" class="service"><div id="rightServiceText" class="serviceText">To</div></div>
-                            </div>
-                            <div id="introServicesLogin">
-                                <div id="leftServiceLogin"></div>
-                                <div id="rightServiceLogin"></div>
-                            </div>
+    </div>
+    <div id="divButtonSync">
+        <input id="buttonSync" type="image" src="Right.png" width="64" height="64" />
+    </div>
+    <div id="intro" class="wrapper">
+        <div id="introBorder">
+            <div id="introBox">
+                <div class="logo" id="logo2">Picopy</div>
+                <div id="introText" class="whiteBox introItem">Login to services to sync</div>
+                <div id="introServicesSelectedWrapper">
+                    <div id="introServicesSelectedBox" class="whiteBox introItem">
+                        <div id="introServicesSelected" class="introServicesSelected">
+                            <div id="leftService" class="service"><div id="leftServiceText" class="serviceText">From</div></div>
+                            <img id="serviceArrow" src="Right.png" width="64" height="64"></img>
+                            <div id="rightService" class="service"><div id="rightServiceText" class="serviceText">To</div></div>
+                        </div>
+                        <div id="introServicesLogin">
+                            <div id="leftServiceLogin"></div>
+                            <div id="rightServiceLogin"></div>
                         </div>
                     </div>
-                    <div id="introServicesWrapper" class="whiteBox introItem">
-                        <div id="messageNotSupported">Sorry, other services are not yet supported</div>
-                        <div id="introServices">
-                            <img class="serviceIcon" id="serviceGoogle" name="Google" src="plus-badge.png"></img>
-                            <div class="serviceIcon" id="serviceFacebook" name="Facebook"><img id="facebookIcon" src="f_logo.png"></img></div>
-                            <img class="serviceIcon" id="serviceFakeLeft" src="Right.png" js="fakeLeft"></img>
-                            <img class="serviceIcon" id="serviceFakeRight" src="Right.png" js="fakeRight"></img>
-                        </div>
-                    </div>
-                    <button type="button" id="goButton">
-                        <div id="goText">Go!</div>
-                    </button>
                 </div>
-            </div>
-        </div>
-        <div id="divGoogle">
-            <div id="divGoogleLogin" style="display: none; padding: 2px;">
-                <button id="googleLogin">
-                    <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
-                    <label>Google Login</label>
-                </button>
-            </div>
-            <div id="divGoogleLoggedIn" style="display: none;">
-                <button id="googleLogout">
-                    <img src="http://www.google.com/favicon.ico" style="vertical-align:top"></img>
-                    <label>Google Logout</label>
+                <div id="introServicesWrapper" class="whiteBox introItem">
+                    <div id="messageNotSupported">Sorry, other services are not yet supported</div>
+                    <div id="introServices">
+                        <img class="serviceIcon" id="serviceGoogle" name="Google" src="plus-badge.png"></img>
+                        <div class="serviceIcon" id="serviceFacebook" name="Facebook"><img id="facebookIcon" src="f_logo.png"></img></div>
+                        <img class="serviceIcon" id="serviceFakeLeft" src="Right.png" js="fakeLeft" width="64" height="64"></img>
+                        <img class="serviceIcon" id="serviceFakeRight" src="Right.png" js="fakeRight" width="64" height="64"></img>
+                    </div>
+                </div>
+                <button type="button" id="goButton">
+                    <div id="goText">Go!</div>
                 </button>
             </div>
         </div>
-        <div id="divFacebook" style="padding: 2px;">
-            <div id="divFacebookLogIn">
-                <div>
-                    <fb:login-button id="facebookLogin" scope="user_photos, publish_stream" onlogin="FacebookSync.onLogin()"></fb:login-button>
-                </div>
+    </div>
+    <div id="divGoogle">
+        <div id="divGoogleLogin" style="display: none; padding: 2px;">
+            <button id="googleLogin">
+                <img src="http://www.google.com/favicon.ico" style="vertical-align:top" width="16px" height="16px"></img>
+                <label>Google Login</label>
+            </button>
+        </div>
+        <div id="divGoogleLoggedIn" style="display: none;">
+            <button id="googleLogout">
+                <img src="http://www.google.com/favicon.ico" style="vertical-align:top" width="16px" height="16px"></img>
+                <label>Google Logout</label>
+            </button>
+        </div>
+    </div>
+    <div id="divFacebook" style="padding: 2px;">
+        <div id="divFacebookLogIn">
+            <div>
+                <fb:login-button id="facebookLogin" scope="user_photos, publish_stream" onlogin="FacebookSync.onLogin()"></fb:login-button>
             </div>
-            <div id="divFacebookLoggedIn" style="display: none;">
-                <img id="facebookProfileImage"></img>
-                <span>
-                    <fb:login-button style="width: 132px; height: 25px;" scope="user_photos, publish_stream" onclick="FacebookSync.logout()"></fb:login-button>
-                </span>
-            </div>
+        </div>
+        <div id="divFacebookLoggedIn" style="display: none;">
+            <img id="facebookProfileImage"></img>
+            <span>
+                <fb:login-button style="width: 132px; height: 25px;" scope="user_photos, publish_stream" onclick="FacebookSync.logout()"></fb:login-button>
+            </span>
         </div>
     </div>
 </body>

@@ -1,465 +1,387 @@
 html, body {
-   height:100%;
-   margin: 0;
-   padding: 0;
-   border: none;
-   /*text-align: center;*/
+     margin: 0;
+     padding: 0;
+     border: none;
 }
 
-body
-{
-    font-family: "Helvetica Neue", "lucinda grande",arial,sans-serif;
-    font-size: 13px;
-    color: #333333;
-    background: #e9e9e9;
-    /*-webkit-transform: translate3d(0, 0, 0);*/
+body {
+     font-family: "Helvetica Neue", "lucinda grande",arial,sans-serif;
+     font-size: 13px;
+     color: #333;
+     background: #e9e9e9;
 }
 
-#wrapper {
-  -webkit-transform: translate3d(0, 0, 0);
-  height: 100%;
+.wrapper {
+     -webkit-transform: translate3d(0, 0, 0);
+     position: absolute;
+     left: 0;
+     top: 0;
+     width: 100%;
+     height: 100%;
 }
 
 #intro {
-  height:100%;
-  width: 100%;
-  position: absolute;
-  background: rgba(0,0,0,0.8);
-  z-index: 3;
-  opacity: 0;
-  -moz-opacity: 0;
-  filter:alpha(opacity=0);
+     height: 100%;
+     width: 100%;
+     position: absolute;
+     background: rgba(0,0,0,0.8);
+     z-index: 3;
+     opacity: 0;
+     -moz-opacity: 0;
+     filter: alpha(opacity=0);
 }
 
 #introBorder {
-  height: 490px;
-  width: 600px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin: -245px 0 0 -300px;
-  /*border-style: dashed;
-  border-width: 1;
-  border-color: gray;*/
+     height: 490px;
+     width: 600px;
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     margin: -245px 0 0 -300px;
 }
 
 #introBox {
-  width: 100%;
-  height: 100%;
-  background: #e9e9e9;
-  text-align: center;
-  /*padding-top: 5px;*/
-  /*padding-bottom: 5px;*/
+     width: 100%;
+     height: 100%;
+     background: #e9e9e9;
+     text-align: center;
 }
 
 #introServicesSelectedWrapper {
-  width: 400px;
-  height: 160px;
-  margin: 0 auto;
+     width: 400px;
+     height: 160px;
+     margin: 0 auto;
 }
 
 #introServicesSelectedBox {
-  width: 400px;
-  height: 140px;
+     width: 400px;
+     height: 140px;
 }
 
 .introServicesSelected {
-  position: relative;
-  margin: 0 auto;
-  width: 296px;
-  height: 106px;
-  /*margin: 10px auto 0 auto;*/
+     position: relative;
+     margin: 0 auto;
+     width: 296px;
+     height: 106px;
 }
 
-#introServicesSelected {
+.introServicesSelected div, img {
+     float: left;
 }
 
-.introServicesSelected div,img{
-  float: left;
-}
-
-.service{
-  width: 100px;
-  height: 100px;
-  border-style: solid;
-  border-width: 3px;
-  border-color: gray;
+.service {
+     width: 100px;
+     height: 100px;
+     border: 3px solid gray;
 }
 
 #leftService {
-  margin: 0 10px 0 0;
+     margin: 0 10px 0 0;
 }
 
 #rightService {
-  margin: 0 0 0 10px;
-}
-
-.serviceText {
-  font-weight: 300;
-  font-size: 24px;
-  color: #555;
-  width: 100px;
-  height: 100px;
-  text-align: center;
-  margin: 25px 0 0 5px;
+     margin: 0 0 0 10px;
 }
 
 #serviceArrow {
-  margin-top: 20px;
+     margin-top: 20px;
 }
 
 #introServicesLogin {
-  /*background: green;*/
-  width: 356px;
-  height: 20px;
-  margin: 5px auto;
+     width: 356px;
+     height: 20px;
+     margin: 5px auto;
 }
 
 #leftServiceLogin {
-  float: left;
-  /*background: black;*/
-  width: 166px;
-  height: 40px;
+     float: left;
+     width: 166px;
+     height: 40px;
 }
 
 #rightServiceLogin {
-  float: right;
-  /*background: blue;*/
-  width: 166px;
-  height: 40px;
+     float: right;
+     width: 166px;
+     height: 40px;
 }
 
 #introServicesWrapper {
-  width: 400px;
+     width: 400px;
 }
 
 #introServices {
-  width: 232px;
-  height: 100px;
-  margin: 0px auto;
+     width: 232px;
+     height: 100px;
+     margin: 0 auto;
 }
 
 .serviceIcon {
-  float: left;
-  width: 100px;
-  height: 100px;
-  margin: 0 5px 0 5px;
-  /*border-style: solid;
-  border-width: 1;
-  border-color: gray;*/
-  /*position: absolute;*/
-  /*cursor: hand;*/
+     float: left;
+     width: 100px;
+     height: 100px;
+     margin: 0 5px;
 }
 
 #facebookIcon {
-  width: 90px;
-  height: 90px;
-  border-radius: 8px;
-  margin: 5px 0 0 5px;
-  box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.5);
+     width: 90px;
+     height: 90px;
+     border-radius: 8px;
+     margin: 5px 0 0 5px;
+     box-shadow: 1px 1px 12px rgba(0, 0, 0, 0.5);
 }
 
 #goButton {
-  background: -webkit-gradient(linear, left top, left bottom, 
-    color-stop(0%,#2981e4), color-stop(100%,#4ba3f6)); /* Chrome,Safari4+ */
-  /*display: inline-block;*/
-  /*padding: 5px 10px 6px;*/
-  color: #fff;
-  text-decoration: none;
-  -moz-border-radius: 6px;
-  -webkit-border-radius: 6px;
-  -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.6);
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-  border-bottom: 1px solid rgba(0,0,0,0.25);
-  width: 100px;
-  height: 40px;
-  margin: 0px auto 0px auto;
-  text-align: center;
-  position: relative;
+    background: #2981e4; /* for non-css3 browsers */
+
+     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2981e4', endColorstr='#4ba3f6'); /* for IE */
+     background: -webkit-gradient(linear, left top, left bottom, from(#2981e4), to(#4ba3f6)); /* for webkit browsers */
+     background: -moz-linear-gradient(top,  #2981e4,  #4ba3f6); /* for firefox 3.6+ */ 
+     color: #fff;
+     text-decoration: none;
+     border-radius: 6px;
+     box-shadow: 0 1px 3px rgba(0,0,0,0.6);
+     text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+     border-bottom: 1px solid rgba(0,0,0,0.25);
+     width: 100px;
+     height: 40px;
+     margin: 0 auto;
+     text-align: center;
+     position: relative;
+     cursor: pointer;
 }
 
 #goText {
-  position: relative;
-  font-size: 12pt;
-  /*top: 13px;*/
-  /*position: relative;*/
-  /*margin: 0 auto 0 auto;*/
-  /*margin-top: 7px;*/
-  color: white;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  user-select: none;
-  cursor: default;
+     position: relative;
+     font-size: 12pt;
+     color: white;
+     -moz-user-select: none;
+     -khtml-user-select: none;
+     user-select: none;
+     cursor: pointer;
 }
 
 #messageNotSupported {
-  position: absolute;
-    font-weight: 300;
-  width: 400px;
-  font-size: 16px;
-  margin-top: 38px;
+     position: absolute;
+     font-weight: 300;
+     width: 400px;
+     font-size: 16px;
+     margin-top: 38px;
 }
 
 #about {
-  position: absolute;
-  left: 15px;
-  top: 10px;
-  width: 160px;
-  height: 55px;
-  font-weight: 300;
-  font-size: 10pt;
-  line-height: 25px;
-  padding: 10px;
+     position: absolute;
+     left: 15px;
+     top: 10px;
+     width: 165px;
+     height: 55px;
+     font-weight: 300;
+     font-size: 10pt;
+     line-height: 25px;
+     padding: 10px;
 }
 
 #container {
-   min-height: 100%;
-   width: 100%;
-   position: absolute;
-   overflow: auto;
+     min-height: 100%;
+     width: 100%;
+     position: absolute;
+     overflow: auto;
 }
 
 #topSection {
-  margin: 5px 0 5px 0;
-  width: 100%;
-  height: 80px;
-  /*position: absolute;*/
+     margin: 5px 0;
+     width: 100%;
+     height: 80px;
 }
 
 .logo {
-  /*background: black;*/
-  margin: 0px auto 0px auto;
-
-  width: 400px;
-  height: 60px;
+     margin: 0 auto;
+     width: 400px;
+     height: 60px;
 }
 
 #logo2 {
-  /*background: black;*/
-  /*background: -webkit-gradient(linear, left top, left bottom, */
-    /*color-stop(0%,#666), color-stop(70%,#222)); /* Chrome,Safari4+ */
-  font: 36pt sans-serif;
-  color: #333;
-  text-align: center;
-  text-shadow: 0px 0px 10px #666;
+     font: 36pt sans-serif;
+     color: #333;
+     text-align: center;
+     text-shadow: 0 0 10px #666;
 }
 
 #introText {
-  height: 25px;
-  width: 400px;
-  color: #333;
-  font-weight: 300;
-  font-size: 18px;
-  /*line-height: 20px;*/
+     height: 25px;
+     width: 400px;
+     color: #333;
+     font-weight: 300;
+     font-size: 18px;
 }
 
 .whiteBox {
-  background: white;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+     background: white;
+     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .introItem {
-  margin: 10px auto 10px auto;
-  padding: 10px 0 10px 0;
+     margin: 10px auto;
+     padding: 10px 0;
 }
 
 #services {
-  position: absolute;
-  /*background: blue;*/font-weight: 300;
-  font-size: 20px;
-  line-height: 20px;
-  width: 255px;
-  height: 106px;
-  top: 10px;
-  right: 0px;
+     position: absolute;
+     font-weight: 300;
+     font-size: 20px;
+     line-height: 20px;
+     width: 255px;
+     height: 106px;
+     top: 10px;
+     right: 0;
 }
 
 .divService {
-  float: left;
-  border-style: solid;
-  border-width: 1px;
-  margin-right: 10px;
+     float: left;
+     border-style: solid;
+     border-width: 1px;
+     margin-right: 10px;
 }
 
 .serviceBg {
-  width: 40px;
-  height: 40px;
-  float: left;
-  vertical-align: center;
+     width: 40px;
+     height: 40px;
+     float: left;
+     vertical-align: center;
 }
 
 .serviceText {
-  float: left;
-  /*height: 40px;*/
-  width: 80px;
-  padding: 10px 0 0 5px;
-  vertical-align: center;
+     font-weight: 300;
+     font-size: 24px;
+     color: #555;
+     height: 100px;
+     text-align: center;
+     margin: 25px 0 0 5px;
+     float: left;
+     width: 80px;
+     padding: 10px 0 0 5px;
+     vertical-align: center;
 }
 
-/*#topCenter {
-    padding-top: 5px;
-    width: 435px;
-    height: 80px;
-    margin: 0px auto;
-    color: #333;
-}*/
-
 #middle {
-  clear: both;
-  padding-top: 5px;
-  /*width: 1140px;*/
-  overflow: auto;
-  /*margin: 120px auto 0 auto;*/
-  color: #333;
-  text-align: center;
-  margin: 0 15px;
-
-  /*padding-bottom: 30px;*/   /* Height of the footer */
+     clear: both;
+     padding-top: 5px;
+     overflow: auto;
+     color: #333;
+     text-align: center;
+     margin: 0 15px;
 }
 
 .midItem {
-    position: relative;
-    background: #fff;
-    overflow: auto;
-    width: 100%;
-    /*border-width:2px 1px;
-    border-style:solid;
-    border-color:#babcbf;*/
-    /*width: 50%;*/
-    /*float: left;*/
-    /*margin-left: 50px;*/
-    /*margin-right: 50px;*/
-    /*border-radius: 5px;*/
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+     position: relative;
+     background: #fff;
+     overflow: auto;
+     width: 100%;
+     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 
 .middleDivWrapper {
-  width: 50%;
-  float: left;
+     width: 50%;
+     float: left;
 }
 
 #divLeft {
-    /*padding: 10px;*/
-    /*margin-left: 15px;*/
-    margin-right: 50px;
+     margin-right: 50px;
 }
 
 #divRight {
-    margin-left: 50px;
-    /*margin-right: 15px;*/
-    /*padding: 10px;*/
+     margin-left: 50px;
 }
 
 #divButtonSync {
-  clear: both;
-  position:fixed;
-  width:64px;
-  height:64px;
-  top:0;
-  left: 50%;
-  top: 50%;
-  margin: -32px 0 0 -32px;
-  text-align: center;
+     clear: both;
+     position: fixed;
+     width: 64px;
+     height: 64px;
+     left: 50%;
+     top: 50%;
+     margin: -32px 0 0 -32px;
+     text-align: center;
 }
 
-/*#syncText {
-  position: absolute;
-  top: 50%;
-  margin-top: -10px;
-  color: gray;
-}*/
-
 .table {
-  margin: 0 auto;
-  width: 540px;
-  height: auto;
-  min-height: 100px;
+     margin: 0 auto;
+     width: 540px;
+     height: auto;
+     min-height: 100px;
+}
+
+#divGoogle label {
+     cursor: pointer;
 }
 
 #googleLogin, #googleLogout {
-  height: 25px;
+     height: 25px;
 }
 
 .highlightError {
-  border-width:3px;
-    border-style:solid;
-    border-color:red;
+     border: 3px solid red;
 }
 
 .tableRow {
-  position: relative;
-  float: left;
-  margin: 10px;
-  text-align: left;
-  overflow: hidden;
-  width: 160px;
-  height: 160px;
+     position: relative;
+     float: left;
+     margin: 10px;
+     text-align: left;
+     overflow: hidden;
+     width: 160px;
+     height: 160px;
 }
 
 .tableRowImg {
-  width: 160px; 
-  height:160px; 
-  position: absolute;
-  left: 0px;
-  top: 0px;
+     width: 160px;
+     height: 160px;
+     position: absolute;
+     left: 0;
+     top: 0;
 }
 
-
 .topItem {
-    margin: auto;
-    background: #ffffff;
-    border-width:2px 1px;
-    border-style:solid;
-    border-color:#babcbf;
-    text-align: center;
-    width: 210px;
-    height: 70px;
-    border-radius: 6px;
+     margin: auto;
+     background: #fff;
+     text-align: center;
+     width: 210px;
+     height: 70px;
+     border-radius: 6px;
+     border: 2px 1px solid #babcbf;
 }
 
 .labelbg {
-  z-index: 2;
-  width: 160px;
-  height: 40px;
-  background: rgba(0,0,0,0.6);
-  position: absolute;
-  left: 0px;
-  top: 120px;
+     z-index: 2;
+     width: 160px;
+     height: 40px;
+     background: rgba(0,0,0,0.6);
+     position: absolute;
+     left: 0;
+     top: 120px;
 }
 
 .tableRowLabel {
-  z-index: 2;
-  color:#fff;
-  font-size:10pt;
-  position: relative;
-  left: 5px;
-  top: 2px;
+     z-index: 2;
+     color: #fff;
+     font-size: 10pt;
+     position: relative;
+     left: 5px;
+     top: 2px;
 }
 
 .tableHeader {
-  background: #fff;
-  height: 30px;
-  /*color: #000;*/
-  font-weight: 300;
-  font-size: 18px;
-  padding-top: 5px;
-  margin: 0 0 10px 0;
-  /*font-size: 18px;*/
-  /*font-weight: bold;*/
-  /*border-radius: 6 6 0 0;*/
-  /*text-shadow: 0px 0px 1px #999;*/
+     background: #fff;
+     height: 30px;
+     font-weight: 300;
+     font-size: 18px;
+     padding-top: 5px;
+     margin: 0 0 10px;
 }
 
 .loading {
-  position: absolute;
-  display: none;
-  left: 50%;
-  top: 50%;
-  margin: -16px 0 0 -16px;
-    /*display: none;*/
-    /*top: 55px;*/
-    /*margin-left: -16px;*/
+     position: absolute;
+     display: none;
+     left: 50%;
+     top: 50%;
+     margin: -16px 0 0 -16px;
 }

@@ -1,0 +1,1 @@
+java -jar ../closure-compiler/compiler.jar --js=helpers.js --js=cookie.js --js=jquery.color.js --js=jquery.transit.min.js --js=picopy.js --js=googleSync.js --js=facebookSync.js --js_output_file=picopy-min.js

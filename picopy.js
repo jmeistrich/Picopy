@@ -1,5 +1,3 @@
-var isLocal = true;
-
 (function(f, $, undefined) {
 
 var v = f.v = f.v || {
@@ -18,12 +16,12 @@ var v = f.v = f.v || {
 
 f.clearTable = function()
 {
-	$.each($("#tableLeft div"), function(index, row)
+	$.each($('#tableLeft div'), function(index, row)
 	{
 		$(row).remove();
 	});
 
-	$.each($("#tableRight div"), function(index, row)
+	$.each($('#tableRight div'), function(index, row)
 	{
 		$(row).remove();
 	});
@@ -52,10 +50,10 @@ f.doCompare = function()
 		$('.loading').hide();
 		f.clearTable();
 
-		$("#loadingLeft").fadeOut();
-		$("#loadingRight").fadeOut();
-		$("#divGoogle").fadeOut();
-		$("#divFacebook").fadeOut();
+		$('#loadingLeft').fadeOut();
+		$('#loadingRight').fadeOut();
+		$('#divGoogle').fadeOut();
+		$('#divFacebook').fadeOut();
 
 		var data1 = v.leftData;
 		var data2 = v.rightData;
@@ -85,7 +83,7 @@ f.doCompare = function()
 					}
 				}
 			});
-			var row =  '<div id="' + rowPrefix + index + '" class="tableRow" draggable="true"';
+			var row =  '<div id="' + rowPrefix + index + '" class="tableRow"';
 			if(data1 == v.leftData)
 			{
 				row += ' onclick="photoSync.toggle(this);"';
@@ -111,13 +109,13 @@ f.uploader = function(id, albumId, images, index, albumOrder, side, rowPrefix)
 {
 	if (!images || index >= images.length)
 	{
-		$('#'+rowPrefix + id).slideUp("slow", function() { 
+		$('#'+rowPrefix + id).slideUp('slow', function() { 
 			$(this).remove();
 		} );
 
 		setTimeout(function(){
 			var im = $('#img_' + id + '_0');
-			im.css("zIndex", 800);
+			im.css('zIndex', 800);
 			im.animate({'width': '160px', 'height': '160px'},1000);
 			var target = $('#rowOn'+ id);
 			var label = target.find('.labelbg');
@@ -217,7 +215,7 @@ f.animateImages = function($old, images, id, rowPrefix)
 		{
 			var img = $old.find('img');
 			img.attr('id','img_' + id + '_' + i);
-			img.animate({'width': size+'px', 'height': size+'px'}, "normal");
+			img.animate({'width': size+'px', 'height': size+'px'}, 'normal');
 		}
 		else
 		{
@@ -233,7 +231,7 @@ f.animateImages = function($old, images, id, rowPrefix)
 				'opacity': '0'});
 			$old.prepend(newImg);
 
-			newImg.animate({'opacity': '1'}, "slow");
+			newImg.animate({'opacity': '1'}, 'slow');
 		}
 		if(images[i].isSynced)
 		{
@@ -261,18 +259,18 @@ f.sync = function()
 			$new.attr('id','rowOn' + id);
 			var width = $new.width();
 			$new.css({'width': '0'});
-			$new.animate({'opacity': 1, 'width': width+'px'}, "normal");
+			$new.animate({'opacity': 1, 'width': width+'px'}, 'normal');
 			$new.find('img').remove();
 			albumOrder.push(id);
 			side.getImages(id, function(ims) 
 			{
 			    // The actual upload code
 		    
-				var albumName = $("#title" + id).html();
+				var albumName = $('#title' + id).html();
 
 				if(data[id].isPartial)
 				{
-					console.log("Partial: ", v.leftData[id].fbId);
+					console.log('Partial: ', v.leftData[id].fbId);
 					otherSide.getImages(data[id].fbId, function(imsRight) {
 						for(var i = 0; i < imsRight.length; i ++)
 						{
@@ -281,7 +279,7 @@ f.sync = function()
 								if(imsRight[i].name.indexOf(ims[u].link) != -1)
 								{
 									ims[u].isSynced = true;
-									console.log("already synced: " + u);
+									console.log('already synced: ' + u);
 								}
 							}
 							
@@ -310,7 +308,7 @@ f.sync = function()
 			});
 		});
 	}
-	sync($("#tableLeft"), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, "tableRowLeft");
+	sync($('#tableLeft'), v.leftSide, v.rightSide, v.leftData, v.albumOrderLeft, 'tableRowLeft');
 }
 
 f.onLoad = function()
@@ -397,7 +395,7 @@ function animateIntoPlace(params)
 	obj.transition({
 		'left': targetOffset.left,
 		'top': targetOffset.top,
-		'scale': scale,
+		'scale': scale
 	}, speed, function()
 	{
 		obj.css('zIndex', oldIndex);
@@ -445,14 +443,14 @@ function animateIntoPlace(params)
 f.openIntro = function()
 {
 	$('#intro').show();
-	$("#intro").animate({'opacity': 1}, "slow");
-	animateIntoPlace({obj: $('#logo2'), speed:"slow", doAfter:'restore'});
+	$('#intro').animate({'opacity': 1}, 'slow');
+	animateIntoPlace({obj: $('#logo2'), speed:'slow', doAfter:'restore'});
 	animateIntoPlace({obj:$('#introServicesSelectedBox'), speed:'slow', scale: '1', doAfter:'restore', handler:function(){
 		$('#introServicesLogin').show();
 	}});
 	setTimeout(function(){
 		$('#introServicesSelectedBox').css({'height': '+=30px'});
-		$(".service").animate({'borderWidth': '3px'}, 0);
+		$('.service').animate({'borderWidth': '3px'}, 0);
 	}, 200);
 	
 }
@@ -460,10 +458,10 @@ f.openIntro = function()
 f.closeIntro = function()
 {
 	$('#introServicesLogin').hide();
-	$(".service").animate({'borderWidth': '0px'}, "slow");
+	$('.service').animate({'borderWidth': '0px'}, 'slow');
 	animateIntoPlace({obj:$('#logo2'), targetObj: $('#logo'), speed:'slow', doAfter:'append'});
 	animateIntoPlace({obj:$('#introServicesSelectedBox'), targetObj:$('#services'), speed:'slow', scale: '0.6', doAfter:'append'});
-	$("#intro").animate({'opacity': 0}, "slow", function() {
+	$('#intro').animate({'opacity': 0}, 'slow', function() {
 		$('#intro').hide();
 	});
 	setTimeout(function(){
@@ -487,14 +485,14 @@ function clickServiceIcon(icon, force)
 	{
 		if(v.leftSide == null)
 		{
-			name = "leftService";
+			name = 'leftService';
 			v.leftSide = js;
 			v.leftName = serviceName;
 			$.cookie('left', icon.attr('id'));
 		}
 		else if(v.rightSide == null)
 		{
-			name = "rightService";
+			name = 'rightService';
 			v.rightSide = js;
 			$.cookie('right', icon.attr('id'));
 		}
@@ -548,7 +546,7 @@ f.highlight = function(elem)
 	}).animate({backgroundColor: 'rgba(0,0,0,0)'},2000);
 }
 
-$(window).bind("load", function() {
+$(window).bind('load', function() {
 	$('#intro').css('opacity', '1');
 
 	if(!v.useFakeData)
@@ -602,8 +600,7 @@ $(window).bind("load", function() {
 		f.openIntro();
 	});
 
-	if(isLocal)
-		addScript('live.js');
+	// addScript('live.js');
 });
 
 $(function()

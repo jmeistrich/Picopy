@@ -1,8 +1,8 @@
 function addScript(filename, callback)
 {
-    var rnd = Math.floor(Math.random() * 80000);
     var e = document.createElement('script');
     e.type = 'text/javascript';
+    e.async = true;
     e.src = filename;// + "?r=" + rnd;
     if (callback)
     {
