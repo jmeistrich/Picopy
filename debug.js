@@ -7,7 +7,6 @@
 			if (String.fromCharCode(e.keyCode) == key)
 			{
 				setTimeout(fn+"();", 1);
-				// this[fn]();
 			}
 		});
 	};
