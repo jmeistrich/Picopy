@@ -453,7 +453,6 @@ f.openIntro = function()
 		$('#introServicesSelectedBox').css({'height': '+=30px'});
 		$('.service').animate({'borderWidth': '3px'}, 0);
 	}, 200);
-	
 }
 
 f.closeIntro = function()

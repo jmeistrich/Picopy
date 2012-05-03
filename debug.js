@@ -9,5 +9,5 @@
 				setTimeout(fn+"();", 1);
 			}
 		});
-	};
+	};	
 }(window.Debug = window.Debug || {}, jQuery));
